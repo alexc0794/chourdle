@@ -1,6 +1,6 @@
 import { useState } from "react";
-import SearchBar, { SearchResult } from "../components/SearchBar";
-import { Place } from "../interfaces";
+import SearchBar, { SearchResult } from "@/components/SearchBar";
+import { Place } from "@/interfaces";
 
 
 export default function Create() {

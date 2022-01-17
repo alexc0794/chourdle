@@ -1,6 +1,6 @@
 import axios from "axios";
-import { BASE_API_URL } from "../../config";
-import { User } from "../../interfaces";
+import { BASE_API_URL } from "@/config";
+import { User } from "@/interfaces";
 
 
 export async function login(

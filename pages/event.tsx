@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { fetchEvent } from "../components/event/api";
+import { fetchEvent } from "@/components/event/api";
 
 
 export default function Event() {

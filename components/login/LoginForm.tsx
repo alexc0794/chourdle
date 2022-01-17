@@ -1,10 +1,22 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
-import { Box, Button, Input, InputGroup, InputLeftAddon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+} from "@chakra-ui/react";
 import { useRouter } from 'next/router';
 import { login, selectToken } from "../../features/session";
-import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { checkVerification } from "./api";
 import Verification from "./Verification";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 
 
 export type LoginInfo = {

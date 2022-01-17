@@ -1,4 +1,4 @@
-import { FormControl, Input, Stack, Text } from "@chakra-ui/react";
+import { Input, Stack, Text } from "@chakra-ui/react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { verify } from "./api";
 

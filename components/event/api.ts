@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_API_URL } from "../../config";
+import { BASE_API_URL } from "@/config";
 import {
   Event,
   EventUser,
@@ -8,7 +8,7 @@ import {
   Position,
   Eta,
   TransportMode,
-} from "../../interfaces";
+} from "@/interfaces";
 
 
 export async function fetchEvent(

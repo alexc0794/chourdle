@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
+import { User } from '@/interfaces';
 import { login, logout } from './actions';
-import { User } from '../../interfaces';
 
 
 type SessionState = {

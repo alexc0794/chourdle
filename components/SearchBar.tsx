@@ -4,9 +4,9 @@ import PlacesAutocomplete, {
   getLatLng,
   Suggestion
 } from "react-places-autocomplete";
-import useGoogleMaps from "../hooks/useGoogleMaps";
-import { Place } from "../interfaces";
-import styles from "../styles/SearchBar.module.css";
+import { Place } from "@/interfaces";
+import useGoogleMaps from "@/hooks/useGoogleMaps";
+import styles from "@/styles/SearchBar.module.css";
 
 
 export interface SearchResult {

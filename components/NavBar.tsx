@@ -1,6 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import styles from "../styles/NavBar.module.css"
+
 
 const HOME_LINK = {
   display: "Home",
