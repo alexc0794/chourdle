@@ -1,3 +1,4 @@
+import { Box, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import styles from "../styles/NavBar.module.css"
 
@@ -17,13 +18,34 @@ const LINKS = [HOME_LINK, EVENT_LINK, PROFILE_LINK];
 
 const NavBar = () => {
   return (
-    <nav className={styles.container}>
-      <div className={styles.link}>
+    <Box
+      pos="fixed"
+      bottom={0}
+      right={0}
+      left={0}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      p="0.5rem"
+      bg="background.dark"
+    >
+      <Box
+        as="nav"
+        display="flex"
+        justifyContent="space-between"
+        padding="0.5rem 1rem"
+        width="90%"
+      >
+
         {LINKS.map(({ display, url }) => (
-          <Link key={display} href={url}><a>{display}</a></Link>
+          <Link key={display} href={url}>
+            <a>
+              <Text p="0.5rem 1rem" color="white">{display}</Text>
+            </a>
+          </Link>
         ))}
-      </div>
-    </nav>
+      </Box>
+    </Box>
   )
 };
 
