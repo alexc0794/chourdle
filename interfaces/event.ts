@@ -1,4 +1,4 @@
-import { Place, Position, Eta, TransportMode } from "../interfaces";
+import { Place, Position, Eta, TransportMode } from ".";
 
 
 export interface EventUserSettings {

@@ -1,4 +1,5 @@
-import { TransportMode } from "./event";
+import { TransportMode } from ".";
+
 
 export interface User {
   name: string;

@@ -1,23 +1,16 @@
-import { Box, Button, FormControl, Input, InputGroup, InputLeftAddon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack } from "@chakra-ui/react";
 import React, { useState, ChangeEvent, useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { Redirect, useLocation } from "react-router-dom";
-// import Form from "react-bootstrap/Form";
-// import InputGroup from "react-bootstrap/InputGroup";
-// import Button from "react-bootstrap/Button";
-// import Spinner from "react-bootstrap/Spinner";
+import { Box, Button, Input, InputGroup, InputLeftAddon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack } from "@chakra-ui/react";
+import { useRouter } from 'next/router';
+import { login, selectToken } from "../../features/session";
+import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { checkVerification } from "./api";
 import Verification from "./Verification";
-// import { login } from "../actions";
-// import { selectPhoneNumber } from "../selectors";
-// import "./index.css";
 
 
 export type LoginInfo = {
   phoneNumber: string;
   name: string;
 };
-
 
 export default function LoginForm() {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
@@ -37,15 +30,17 @@ export default function LoginForm() {
     }
   }, []);
 
-
-  // const isLoggedIn = !!useSelector(selectPhoneNumber);
-  // if (isLoggedIn) {
-  //   const params = new URLSearchParams(search);
-  //   const redirectPath = params.get('redirect');
-  //   if (redirectPath) {
-  //     return <Redirect to={redirectPath} />
-  //   }
-  // }
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const isLoggedIn = !!useAppSelector(selectToken);
+  if (isLoggedIn) {
+    const redirectPath = router.query['redirect']
+    if (redirectPath && typeof redirectPath === "string") {
+      router.push(redirectPath);
+    } else {
+      router.push('/');
+    }
+  }
 
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => {
     let re = /^[a-zA-Z]+$/;
@@ -83,7 +78,10 @@ export default function LoginForm() {
     setShowVerification(false);
     const loginInfo: LoginInfo = { phoneNumber, name };
     window.localStorage.setItem("login", JSON.stringify(loginInfo));
-    // dispatch(login(loginInfo));
+    dispatch(login({
+      phoneNumber,
+      name,
+    }));
     setIsLoading(false);
   }
 
