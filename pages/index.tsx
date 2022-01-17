@@ -1,14 +1,17 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
+import { useRouter } from 'next/router';
+import SearchBar from '../components/SearchBar'
 import styles from '../styles/Home.module.css'
 
-const Home: NextPage = () => {
+export default function Home() {
+  const router = useRouter();
+  const handleSearchBarClick = () => {
+    router.push('/create');
+  };
+
   return (
     <div className={styles.container}>
-
+      <SearchBar onClick={handleSearchBarClick} />
     </div>
-  )
+  );
 }
 
-export default Home
