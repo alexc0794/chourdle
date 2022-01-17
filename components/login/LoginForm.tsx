@@ -88,7 +88,7 @@ export default function LoginForm() {
   return (
     <Stack spacing={4}>
       <InputGroup size="lg">
-        <InputLeftAddon children='Name' color='black' bgColor='gray.300' />
+        <InputLeftAddon color='black' bgColor='gray.300'>Name</InputLeftAddon>
         <Input
           variant="outline"
           size='lg'
@@ -100,7 +100,7 @@ export default function LoginForm() {
         />
       </InputGroup>
       <InputGroup size="lg">
-        <InputLeftAddon children='Phone' color='black' bgColor='gray.300' />
+        <InputLeftAddon color='black' bgColor='gray.300'>Phone</InputLeftAddon>
         <Input
           type='tel'
           onChange={handleChangePhoneNumber}
