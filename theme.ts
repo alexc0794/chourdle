@@ -1,12 +1,35 @@
 import { extendTheme } from '@chakra-ui/react'
 
+
 const theme = extendTheme({
   colors: {
     background: {
       dark: '#282c34',
     },
   },
-  components: {},
+  components: {
+    Button: {
+    },
+    Modal: {
+      parts: ['content'],
+      variants: {
+        light: {
+          dialog: {
+            color: 'black',
+            bg: 'white',
+          },
+          header: {
+            fontSize: '16pt',
+            borderBottom: '1px solid',
+            borderBottomColor: 'gray.300'
+          },
+          body: {
+            p: '1.5rem',
+          }
+        }
+      }
+    }
+  },
   styles: {
     global: {
       body: {
@@ -19,10 +42,6 @@ const theme = extendTheme({
         backgroundAttachment: 'fixed',
         backgroundColor: 'black',
       },
-      // 'html, body': {
-      //   color: 'gray.600',
-      //   lineHeight: 'tall',
-      // },
       a: {
         color: 'teal.500',
       },

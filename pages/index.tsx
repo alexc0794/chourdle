@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import SearchBar from '../components/SearchBar'
-import styles from '../styles/Home.module.css'
+
 
 export default function Home() {
   const router = useRouter();
@@ -9,7 +9,7 @@ export default function Home() {
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <SearchBar onClick={handleSearchBarClick} />
     </div>
   );
