@@ -1,9 +1,12 @@
 import { useState } from "react";
 import SearchBar, { SearchResult } from "@/components/SearchBar";
 import { Place } from "@/interfaces";
+import useLoginRedirect from "@/hooks/useLoginRedirect";
 
 
 export default function Create() {
+  useLoginRedirect();
+
   const [searchResult, setSearchResult] = useState<SearchResult | null>(null);
 
   function handleSearchBarSelect(name: string, place: Place) {

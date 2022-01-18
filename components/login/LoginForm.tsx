@@ -25,6 +25,7 @@ export type LoginInfo = {
 };
 
 export default function LoginForm() {
+  const dispatch = useAppDispatch();
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [showVerification, setShowVerification] = useState<boolean>(false);
@@ -41,18 +42,6 @@ export default function LoginForm() {
       setName(initialLoginInfo.name);
     }
   }, []);
-
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  const isLoggedIn = !!useAppSelector(selectToken);
-  if (isLoggedIn) {
-    const redirectPath = router.query['redirect']
-    if (redirectPath && typeof redirectPath === "string") {
-      router.push(redirectPath);
-    } else {
-      router.push('/');
-    }
-  }
 
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => {
     let re = /^[a-zA-Z]+$/;
