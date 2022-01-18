@@ -11,7 +11,7 @@ import NavBar from '@/components/NavBar';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <ReduxProvider store={store}>
       <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,14 +19,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <meta name="description" content="Cobyo Meetup web app" />
         <link rel="icon" href="/image/favicon.ico" />
       </Head>
-      <ReduxProvider store={store}>
-        <ChakraProvider theme={theme}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ChakraProvider>
-      </ReduxProvider>
-    </>
+      <ChakraProvider theme={theme}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ChakraProvider>
+    </ReduxProvider>
   );
 }
 
