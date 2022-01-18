@@ -3,12 +3,14 @@ import {
   configureStore,
   ThunkAction,
 } from '@reduxjs/toolkit';
+import { homeReducer } from './home/redux';
 import { sessionReducer } from './session/redux';
 
 
 export const store = configureStore({
   reducer: {
-    session: sessionReducer
+    session: sessionReducer,
+    home: homeReducer,
   },
 });
 

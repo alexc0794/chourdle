@@ -10,6 +10,8 @@ const theme = extendTheme({
   components: {
     Button: {
     },
+    Heading: {
+    },
     Modal: {
       parts: ['content'],
       variants: {
