@@ -36,6 +36,7 @@ export default function LoginForm() {
     const initialLoginInfo: LoginInfo | null = localStorageLoginInfo
       ? JSON.parse(localStorageLoginInfo)
       : null;
+
     if (initialLoginInfo) {
       setPhoneNumber(initialLoginInfo.phoneNumber);
       setName(initialLoginInfo.name);

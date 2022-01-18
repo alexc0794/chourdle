@@ -2,18 +2,19 @@ import { useAppSelector } from "@/hooks/useRedux";
 import { fetchEvent, selectEvent } from "src/event/redux";
 import { wrapper } from "src/store";
 import { Event } from "@/interfaces";
-import { Heading } from "@chakra-ui/react";
+import EventHeader from "src/event/EventHeader";
 
 
 const EventPage = () => {
-  const event: Event | null = useAppSelector(selectEvent)
+  const event: Event | null = useAppSelector(selectEvent);
   return (
     <div>
-      Event
-      {event ? <Heading>{event.eventName}</Heading> : null}
+      {event ? (
+        <EventHeader event={event} me={null} isEditable />
+      ) : null}
     </div>
-  )
-}
+  );
+};
 
 EventPage.getInitialProps = wrapper.getInitialPageProps(
   ({ dispatch }) => async ({ query }) => {
@@ -21,6 +22,6 @@ EventPage.getInitialProps = wrapper.getInitialPageProps(
     if (!eventId) return;
     return await dispatch(fetchEvent(eventId));
   }
-)
+);
 
 export default EventPage;
