@@ -10,9 +10,6 @@ export const fetchEvent = createAsyncThunk(
   async (eventId: string, { getState }) => {
     const state = getState() as RootState;
     const token = selectToken(state);
-    if (!token) {
-      throw new Error('no token');
-    }
     const event: Event | null = await fetchEventApi(eventId, token);
     return event;
   }

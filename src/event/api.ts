@@ -1,5 +1,6 @@
 import axios from "axios";
-import { BASE_API_URL } from "@/config";
+import https from 'https';
+import { BASE_API_URL, IS_DEV } from "@/config";
 import {
   Event,
   EventUser,
@@ -22,6 +23,7 @@ export async function fetchEvent(
   try {
     const response = await axios.get(`${BASE_API_URL}/event/${eventId}`, {
       headers,
+      httpsAgent: IS_DEV ? new https.Agent({ rejectUnauthorized: false }) : null,
     });
     return response.data;
   } catch (e) {
