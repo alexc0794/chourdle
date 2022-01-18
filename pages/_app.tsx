@@ -4,8 +4,8 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { createWrapper } from 'next-redux-wrapper';
 import { ChakraProvider } from '@chakra-ui/react';
-import theme from "../theme";
-import { store } from '../store';
+import theme from "src/theme";
+import { store } from 'src/store';
 import NavBar from '@/components/NavBar';
 
 

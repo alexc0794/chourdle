@@ -1,4 +1,4 @@
-import useLoginRedirect from "@/hooks/useLoginRedirect";
+import useLoginRedirect from "src/hooks/useLoginRedirect";
 import { useEffect } from "react";
 
 

@@ -12,11 +12,10 @@ import {
   ModalOverlay,
   Stack,
 } from "@chakra-ui/react";
-import { useRouter } from 'next/router';
-import { login, selectToken } from "../../features/session";
+import { useAppDispatch } from "@/hooks/useRedux";
+import { login } from "src/session/redux";
 import { checkVerification } from "./api";
 import Verification from "./Verification";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 
 
 export type LoginInfo = {

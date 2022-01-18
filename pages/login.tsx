@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import { Box } from '@chakra-ui/react';
-import LoginForm from '@/components/login/LoginForm';
 import { useAppSelector } from '@/hooks/useRedux';
-import { selectToken } from 'features/session';
+import { selectToken } from 'src/session/redux';
+import LoginForm from 'src/session/LoginForm';
 
 
 export default function Login() {

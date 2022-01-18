@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { RootState } from '../../store';
+import { RootState } from 'src/store';
 
 
 export const selectToken = (state: RootState) => state.session.user?.sessionToken?.token;

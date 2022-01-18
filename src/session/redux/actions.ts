@@ -1,6 +1,6 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit"
-import { login as loginApi } from '@/components/login/api';
 import { User } from "@/interfaces";
+import { login as loginApi } from 'src/session/api';
 
 
 export const logout = createAction('session/logout');

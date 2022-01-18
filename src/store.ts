@@ -3,7 +3,8 @@ import {
   configureStore,
   ThunkAction,
 } from '@reduxjs/toolkit';
-import { sessionReducer } from './features/session';
+import { sessionReducer } from './session/redux';
+
 
 export const store = configureStore({
   reducer: {

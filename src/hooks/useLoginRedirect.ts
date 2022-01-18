@@ -1,7 +1,8 @@
-import { selectToken } from "features/session";
+import { selectToken } from "src/session/redux";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useAppSelector } from "./useRedux";
+
 
 export default function useLoginRedirect() {
   const router = useRouter();
