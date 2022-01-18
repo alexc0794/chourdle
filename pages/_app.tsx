@@ -2,10 +2,9 @@ import '@/styles/globals.css'
 import { Component, ReactElement } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { createWrapper } from 'next-redux-wrapper';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from "src/theme";
-import { store } from 'src/store';
+import { wrapper } from 'src/store';
 import NavBar from '@/components/NavBar';
 
 
@@ -41,8 +40,5 @@ const Layout = ({ children }: { children: ReactElement }) => {
     </div>
   );
 }
-
-const makeStore = () => store;
-const wrapper = createWrapper(makeStore);
 
 export default wrapper.withRedux(MyApp);

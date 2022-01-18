@@ -18,7 +18,6 @@ export async function fetchEvent(
   const headers = {
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
-  console.log(BASE_API_URL);
 
   try {
     const response = await axios.get(`${BASE_API_URL}/event/${eventId}`, {
