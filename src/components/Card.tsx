@@ -17,11 +17,12 @@ const shimmer = keyframes`
 type CardProps = {
   children: ReactElement,
   isShimmering?: boolean,
-};
+} & any;
 
 export default function Card({
   children,
   isShimmering,
+  ...otherProps
 }: CardProps) {
   const shimmerProps = isShimmering ? {
     bg: 'linear-gradient(45deg, #d422b1, #ffce00)',
@@ -38,6 +39,7 @@ export default function Card({
       width='100%'
       borderRadius='0.25rem'
       {...shimmerProps}
+      {...otherProps}
     >
       {children}
     </Box>

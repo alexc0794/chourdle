@@ -38,11 +38,14 @@ export const updateTransportMode = createAsyncThunk(
   async (
     {eventId, transportMode}: {eventId: string, transportMode: TransportMode},
     { getState },
-  ) => {
+  ): Promise<Event> => {
     const state = getState() as RootState;
     const token = selectToken(state);
     if (!token) { throw new Error('no token'); }
 
-    await updateTransportModeApi(eventId, token, transportMode);
+    const event = await updateTransportModeApi(eventId, token, transportMode);
+    if (!event) { throw new Error('failed'); }
+    
+    return event;
   }
 );

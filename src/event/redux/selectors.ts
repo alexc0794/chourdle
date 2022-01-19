@@ -4,7 +4,7 @@ import { selectPhoneNumber } from 'src/session/redux';
 import { RootState } from 'src/store';
 
 
-export const selectEvent = (state: RootState) => state.activeEvent.event;
+export const selectEvent = (state: RootState) => state.event.activeEvent.event;
 
 export const selectMe = createSelector(
   selectEvent,
@@ -16,3 +16,5 @@ export const selectMe = createSelector(
         ) || null
       : null
 );
+
+export const selectTransportMode = (state: RootState) => state.event.transportMode;

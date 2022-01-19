@@ -1,6 +1,7 @@
-import { createReducer } from '@reduxjs/toolkit';
-import { Event } from '@/interfaces';
+import { combineReducers, createReducer } from '@reduxjs/toolkit';
+import { Event, TransportMode } from '@/interfaces';
 import { fetchEvent } from './actions';
+import { updateTransportMode } from '.';
 
 
 type ActiveEventState = {
@@ -11,13 +12,13 @@ type ActiveEventState = {
 };
 
 const initialActiveEventState: ActiveEventState = {
-    event: null,
-    updatedAtMs: null,
-    loading: false,
-    error: false,
+  event: null,
+  updatedAtMs: null,
+  loading: false,
+  error: false,
 };
 
-export const activeEventReducer = createReducer(initialActiveEventState, builder => {
+const activeEventReducer = createReducer(initialActiveEventState, builder => {
   builder
     .addCase(fetchEvent.pending, state => {
       state.loading = true;
@@ -29,4 +30,42 @@ export const activeEventReducer = createReducer(initialActiveEventState, builder
       state.event = payload;
       state.updatedAtMs = Date.now();
     })
+    .addCase(updateTransportMode.fulfilled, (state, { payload }) => {
+      state.event = payload;
+      state.updatedAtMs = Date.now();
+    })
+});
+
+
+type TransportModeState = {
+  loading: boolean;
+  error: boolean;
+  transportMode: TransportMode | null;
+};
+
+const initialTransportModeState: TransportModeState = {
+  loading: false,
+  error: false,
+  transportMode: null,
+};
+
+const transportModeReducer = createReducer(initialTransportModeState, builder => {
+  builder
+    .addCase(updateTransportMode.pending, (state, { meta }) => {
+      state.loading = true;
+      state.transportMode = meta.arg.transportMode;
+    })
+    .addCase(updateTransportMode.rejected, state => {
+      state.error = true;
+      state.transportMode = null;
+    })
+    .addCase(updateTransportMode.fulfilled, state => {
+      state.loading = false;
+      state.error = false;
+    })
+});
+
+export const eventReducer = combineReducers({
+  activeEvent: activeEventReducer,
+  transportMode: transportModeReducer
 });

@@ -1,8 +1,19 @@
-import { useAppDispatch } from "@/hooks/useRedux";
+import { TransportModeDetails } from "@/components/TransportModeSelector";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { TransportMode } from "@/interfaces";
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel } from "@chakra-ui/react";
-import { useState } from "react";
-import { updateTransportMode } from "./redux";
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Button,
+  Flex,
+  Spacer,
+  Stack,
+  Text
+} from "@chakra-ui/react";
+import { selectTransportMode, updateTransportMode } from "./redux";
 
 const MODES = Object.keys(TransportMode).filter((key: any) =>
   isNaN(Number(key))
@@ -20,25 +31,70 @@ export default function EventTransportMode({
   transportMode,
   googlePlaceId,
 }: EventTransportModeProps) {
-  const [activeKey, setActiveKey] = useState<string | undefined>(undefined);
-
   const dispatch = useAppDispatch();
+  const {
+    loading,
+    error,
+    transportMode: pendingTransportMode
+  } = useAppSelector(selectTransportMode);
   const handleTransportModeClick = async (transportMode: TransportMode) => {
-    setActiveKey(undefined);
     await dispatch(updateTransportMode({ eventId, transportMode }));
   };
 
   if (transportMode === null) return null;
 
   return (
-    <Accordion allowToggle>
-      <AccordionItem>
+    <Accordion
+      allowToggle
+      bg={'background.dark'}
+    >
+      <AccordionItem border={'none'}>
         <AccordionButton>
-          {TransportMode[transportMode]}{' '}
-          <AccordionIcon />
+          <Stack w={'100%'}>
+            <Flex fontSize={'10pt'} color='font.lightgray'>
+              <Text>Commute time</Text>
+              <Spacer />
+              <Text>Travel by</Text>
+            </Flex>
+            <Flex grow={1}>
+              <TransportModeDetails transportMode={transportMode} googlePlaceId={googlePlaceId} />
+              <Spacer />
+              <Flex align={'center'}>
+                <Text fontSize={'12pt'} mr={'0.25rem'}>
+                  {TransportMode[transportMode]}
+                </Text>
+                <AccordionIcon fontSize={'18pt'} />
+              </Flex>
+            </Flex>
+          </Stack>
         </AccordionButton>
-        <AccordionPanel>
-
+        <AccordionPanel p={0}>
+          <>
+            {MODES.map((mode: string) => {
+              const currentTransportMode = TransportMode[mode as keyof typeof TransportMode];
+              return (
+                <Flex
+                  key={`${mode}${currentTransportMode}`}
+                  display={currentTransportMode === transportMode ? 'none' : 'flex'}
+                  align={'center'}
+                  borderTop={'1px solid rgba(0,0,0,.125)'}
+                  p={'0.75rem 1rem'}
+                >
+                  <TransportModeDetails transportMode={currentTransportMode} googlePlaceId={googlePlaceId} />
+                  <Spacer />
+                  <Button
+                    colorScheme={'blue'}
+                    variant={'outline'}
+                    onClick={() => handleTransportModeClick(currentTransportMode)}
+                    isLoading={pendingTransportMode === currentTransportMode}
+                    disabled={loading}
+                  >
+                    Switch to {mode}
+                  </Button>
+                </Flex>
+              );
+            })}
+          </>
         </AccordionPanel>
       </AccordionItem>
     </Accordion>

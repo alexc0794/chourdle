@@ -6,6 +6,9 @@ const theme = extendTheme({
     background: {
       dark: '#282c34',
     },
+    font: {
+      lightgray: 'lightgray',
+    }
   },
   components: {
     Button: {

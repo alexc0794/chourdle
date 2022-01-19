@@ -8,13 +8,13 @@ import {
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 import { homeReducer } from './home/redux';
 import { sessionReducer } from './session/redux';
-import { activeEventReducer } from './event/redux';
+import { eventReducer } from './event/redux';
 
 
 const combinedReducer = combineReducers({
   session: sessionReducer,
   home: homeReducer,
-  activeEvent: activeEventReducer,
+  event: eventReducer,
 });
 
 const reducer = (

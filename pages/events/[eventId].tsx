@@ -32,11 +32,13 @@ const EventPage = () => {
       {event ? (
         <>
           <EventHeader event={event} me={me} isEditable />
-          <EventTransportMode
-            eventId={event.eventId}
-            transportMode={me?.transportMode || null}
-            googlePlaceId={event.place.googlePlaceId}
-          />
+          {me && (
+            <EventTransportMode
+              eventId={event.eventId}
+              transportMode={me.transportMode}
+              googlePlaceId={event.place.googlePlaceId}
+            />
+          )}
         </>
       ) : null}
     </div>
