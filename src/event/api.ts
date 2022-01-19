@@ -124,7 +124,7 @@ export async function updateEventUser(
   }
 }
 
-export async function updateEventUserTransportMode(
+export async function updateTransportMode(
   eventId: string,
   token: string,
   transportMode: TransportMode
