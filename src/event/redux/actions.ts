@@ -1,11 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { Event, TransportMode } from "@/interfaces";
+import { Event, EventUserState, Position, TransportMode } from "@/interfaces";
 import { selectToken } from "src/session/redux";
 import { RootState } from "src/store";
 import { 
   fetchEvent as fetchEventApi, 
   updateEventName as updateEventNameApi,
   updateTransportMode as updateTransportModeApi,
+  transitionEventUserState as transitionEventUserStateApi,
+  endEvent as endEventApi,
 } from "../api";
 
 
@@ -49,3 +51,47 @@ export const updateTransportMode = createAsyncThunk(
     return event;
   }
 );
+
+export const transitionEventUserState = createAsyncThunk(
+  'event/transitionEventUserState',
+  async (
+    { 
+      eventId, 
+      nextState, 
+      position 
+    }: {
+      eventId: string,
+      nextState: EventUserState | null,
+      position: Position | null
+    },
+    { getState },
+  ): Promise<Event> => {
+    const state = getState() as RootState;
+    const token = selectToken(state);
+    if (!token) { throw new Error('no token'); }
+
+    const event = await transitionEventUserStateApi(
+      eventId,
+      token,
+      nextState,
+      position
+    );
+    if (!event) { throw new Error('failed'); }
+    
+    return event;
+  }
+);
+
+export const endEvent = createAsyncThunk(
+  'event/endEvent',
+  async (eventId: string, { getState }) => {
+    const state = getState() as RootState;
+    const token = selectToken(state);
+    if (!token) { throw new Error('no token'); }
+
+    const event = await endEventApi(eventId, token);
+    if (!event) { throw new Error('failed'); }
+    
+    return event;
+  }
+)

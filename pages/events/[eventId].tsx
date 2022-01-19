@@ -1,4 +1,4 @@
-import { useInterval } from "@chakra-ui/react";
+import { Stack, useInterval } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { fetchEvent, selectEvent, selectMe } from "src/event/redux";
 // import { wrapper } from "src/store";
@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { selectToken } from "src/session/redux";
 import { IS_DEV } from "@/config";
 import { useRouter } from "next/router";
+import EventRecommendation from "src/event/EventRecommendation";
 
 
 const EVENT_REFRESH_RATE_MS = IS_DEV ? 5000 : 60000;
@@ -33,11 +34,14 @@ const EventPage = () => {
         <>
           <EventHeader event={event} me={me} isEditable />
           {me && (
-            <EventTransportMode
-              eventId={event.eventId}
-              transportMode={me.transportMode}
-              googlePlaceId={event.place.googlePlaceId}
-            />
+            <Stack spacing={3}>
+              <EventTransportMode
+                eventId={event.eventId}
+                transportMode={me.transportMode}
+                googlePlaceId={event.place.googlePlaceId}
+              />
+              <EventRecommendation event={event} me={me} />
+            </Stack>
           )}
         </>
       ) : null}
