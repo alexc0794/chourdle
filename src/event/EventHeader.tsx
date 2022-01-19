@@ -42,13 +42,15 @@ function EventHeader({ event, me, isEditable }: EventHeaderProps) {
 
   const handleSaveName = async (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    try {
-      await dispatch(updateEventName({
-        eventId: event.eventId,
-        name: editedName
-      }));
-      setIsEditingName(false);
-    } catch { }
+    if (editedName !== event.eventName) {
+      try {
+        await dispatch(updateEventName({
+          eventId: event.eventId,
+          name: editedName
+        }));
+      } catch { }
+    }
+    setIsEditingName(false);
   };
 
   return (
