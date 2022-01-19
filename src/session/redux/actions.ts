@@ -16,4 +16,4 @@ export const login = createAsyncThunk(
     }
     return user;
   }
-)
+);
