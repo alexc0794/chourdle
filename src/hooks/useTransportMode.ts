@@ -11,7 +11,10 @@ type Cache = {
   [key: string]: Eta
 };
 
-export default function useTransportMode(transportMode: TransportMode | null, googlePlaceId: string | null) {
+export default function useTransportMode(
+  transportMode: TransportMode | null, 
+  googlePlaceId: string | null,
+) {
   const { position } = usePosition();
   const isGoogleLoaded = useGoogleMaps();
   const [cache, setCache] = useState<Cache>({});
@@ -34,7 +37,10 @@ export default function useTransportMode(transportMode: TransportMode | null, go
       });
     }
 
-    if (currentCacheKey in cache && Date.now() - cache[currentCacheKey].recordedAtMs < DISTANCE_CACHE_BUSTER_MS) {
+    if (
+      currentCacheKey in cache 
+      && Date.now() - cache[currentCacheKey].recordedAtMs < DISTANCE_CACHE_BUSTER_MS
+    ) {
       return;
     }
 

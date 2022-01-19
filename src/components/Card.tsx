@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { Box, Heading, keyframes } from "@chakra-ui/react";
+import { Box, keyframes } from "@chakra-ui/react";
 
 
 const shimmer = keyframes`
@@ -34,7 +34,6 @@ export default function Card({
     <Box
       bg='background.dark'
       color='white'
-      m='0 0 1rem'
       p='0.5rem'
       width='100%'
       borderRadius='0.25rem'
