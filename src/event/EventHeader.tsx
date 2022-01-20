@@ -48,7 +48,6 @@ export default function EventHeader({ event, me, isEditable }: EventHeaderProps)
       align='stretch'
       justify='center'
       p='0.5rem'
-      m='0 0 1rem'
     >
       <Editable
         as={Heading}

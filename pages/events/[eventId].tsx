@@ -1,4 +1,4 @@
-import { Stack, useInterval } from "@chakra-ui/react";
+import { Divider, Stack, useInterval } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { fetchEvent, selectEvent, selectMe } from "src/event/redux";
 // import { wrapper } from "src/store";
@@ -34,6 +34,7 @@ const EventPage = () => {
       {event ? (
         <>
           <EventHeader event={event} me={me} isEditable />
+          <Divider borderColor={'background.dark'} />
           {me && (
             <Stack spacing={3}>
               <EventPageSchedule event={event} me={me} />
