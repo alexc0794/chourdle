@@ -1,9 +1,10 @@
-import { MouseEvent, ChangeEvent, useState } from "react";
+import { MouseEvent, useState } from "react";
 import { TRANSPORT_MODE_TO_DIRECTIONS_MODE } from "src/constants";
 import { Event, EventUser } from "@/interfaces";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { updateEventName } from "./redux";
-import { Box, Button, Flex, Heading, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
+import { Box, Editable, EditableInput, EditablePreview, Flex, Heading, IconButton, InputGroup, InputRightElement, Text, useEditableControls } from "@chakra-ui/react";
+import { ChevronRightIcon } from '@chakra-ui/icons'
 
 
 type EventHeaderProps = {
@@ -12,22 +13,12 @@ type EventHeaderProps = {
   isEditable: boolean;
 };
 
-function EventHeader({ event, me, isEditable }: EventHeaderProps) {
+export default function EventHeader({ event, me, isEditable }: EventHeaderProps) {
   const dispatch = useAppDispatch();
   const headerText = event.eventName || event.place.mainText || '';
 
-  const [isEditingName, setIsEditingName] = useState<boolean>(false);
-  const handleNameClick = (e: MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    if (isEditable) {
-      setIsEditingName(true);
-    }
-  };
-
   const [editedName, setEditedName] = useState<string>(headerText);
-  const handleEditedNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEditedName(e.target.value);
-  };
+  const handleEditedNameChange = (name: string) => setEditedName(name);
 
   const handleAddressClick = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
@@ -40,8 +31,7 @@ function EventHeader({ event, me, isEditable }: EventHeaderProps) {
     window.location.href = `comgooglemaps://?${params.toString()}`
   };
 
-  const handleSaveName = async (e: MouseEvent<HTMLElement>) => {
-    e.preventDefault();
+  const handleSaveName = async () => {
     if (editedName !== event.eventName) {
       try {
         await dispatch(updateEventName({
@@ -50,7 +40,6 @@ function EventHeader({ event, me, isEditable }: EventHeaderProps) {
         }));
       } catch { }
     }
-    setIsEditingName(false);
   };
 
   return (
@@ -58,36 +47,25 @@ function EventHeader({ event, me, isEditable }: EventHeaderProps) {
       direction='column'
       align='stretch'
       justify='center'
-      p='1rem'
+      p='0.5rem'
       m='0 0 1rem'
     >
-      {isEditingName ? (
-        <InputGroup>
-          <Input
-            value={editedName}
-            onChange={handleEditedNameChange}
-            fontSize='20pt'
-            p='0 0.25rem'
-          />
-          <InputRightElement>
-            <Button onClick={handleSaveName}>
-              Save
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      ) : (
-        <Heading
-          onClick={handleNameClick}
-          role="link"
-          tabIndex={0}
-          aria-label="Edit event name"
-          mb='0.5rem'
-          padding='0'
-          fontSize='20pt'
-        >
-          {headerText}
-        </Heading>
-      )}
+      <Editable
+        as={Heading}
+        isDisabled={!isEditable || !me}
+        defaultValue={editedName}
+        onChange={handleEditedNameChange}
+        onSubmit={handleSaveName}
+        startWithEditView
+      >
+        <EditablePreview />
+        <Flex>
+          <InputGroup>
+            <EditableInput />
+            <SubmitEditIcon />
+          </InputGroup>
+        </Flex>
+      </Editable>
       <Box
         onClick={handleAddressClick}
         role="link"
@@ -107,4 +85,19 @@ function EventHeader({ event, me, isEditable }: EventHeaderProps) {
   );
 }
 
-export default EventHeader;
+
+function SubmitEditIcon() {
+  const { isEditing, getSubmitButtonProps } = useEditableControls();
+  if (!isEditing) { return null; }
+  return (
+    <InputRightElement>
+      <IconButton
+        size={'md'}
+        icon={<ChevronRightIcon />}
+        aria-label={'Edit event name'}
+        variant={'primary'}
+        {...getSubmitButtonProps()}
+      />
+    </InputRightElement>
+  );
+}
