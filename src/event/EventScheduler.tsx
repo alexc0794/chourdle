@@ -23,7 +23,12 @@ export default function EventPageSchedule({ event, me }: EventPageScheduleProps)
 
   return (
     <Flex alignContent={'stretch'} p={'0.5rem'}>
-      <Flex direction={'column'} grow={1} p={'0.5rem'} maxW={'50%'}>
+      <Flex
+        direction={'column'}
+        grow={1}
+        p={'0.5rem'}
+        maxW={'50%'}
+      >
         <Heading
           fontSize={'10pt'}
           color={'font.lightgray'}
@@ -32,20 +37,24 @@ export default function EventPageSchedule({ event, me }: EventPageScheduleProps)
         >
           Your Projected Arrival
         </Heading>
-        <Flex p={'1rem'}>
+        <Stack spacing={0}>
           {!timeMs && loading && (
             <Spinner size='lg' />
           )}
           {!loading &&
             (timeMs ? (
               <>
-                <Text>{getFormattedDate(timeMs)}</Text>
-                <Text>{getFormattedTime(timeMs)}</Text>
+                <Heading fontSize={'14pt'} fontWeight={200} m={0}>
+                  {getFormattedDate(timeMs)}
+                </Heading>
+                <Heading fontSize={'24pt'} fontWeight={200} m={0}>
+                  {getFormattedTime(timeMs)}
+                </Heading>
               </>
             ) : (
               <Text>--</Text>
             ))}
-        </Flex>
+        </Stack>
       </Flex>
       <Flex
         direction={'column'}
@@ -65,7 +74,7 @@ export default function EventPageSchedule({ event, me }: EventPageScheduleProps)
         >
           Scheduled
         </Heading>
-        <Flex direction={'column'}>
+        <Stack spacing={0}>
           {(() => {
             if (event.scheduledForMs) {
               return (
@@ -82,7 +91,7 @@ export default function EventPageSchedule({ event, me }: EventPageScheduleProps)
               return null;
             }
           })()}
-        </Flex>
+        </Stack>
       </Flex>
       <Modal
         isOpen={showScheduleModal}

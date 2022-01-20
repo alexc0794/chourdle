@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import cx from 'classnames';
 import {
   Event,
   EventUser,
@@ -49,7 +48,7 @@ export default function EventUsers({ event, me }: EventUsersProps) {
     arrivedEventUsers.sort(sortEventUsers);
     usersGroupProps.push({
       eventId: event.eventId,
-      title: "Arrived",
+      title: "ARRIVED",
       eventUsers: arrivedEventUsers,
       startRank: 1,
     });
@@ -59,7 +58,7 @@ export default function EventUsers({ event, me }: EventUsersProps) {
     departedEventUsers.sort(sortEventUsers);
     usersGroupProps.push({
       eventId: event.eventId,
-      title: "Departed",
+      title: "DEPARTED",
       eventUsers: departedEventUsers,
       startRank: arrivedEventUsers.length + 1,
     });
@@ -69,7 +68,7 @@ export default function EventUsers({ event, me }: EventUsersProps) {
     joinedEventUsers.sort(sortEventUsers);
     usersGroupProps.push({
       eventId: event.eventId,
-      title: "Joined",
+      title: "JOINED",
       eventUsers: joinedEventUsers,
       startRank: null,
     });
@@ -79,14 +78,14 @@ export default function EventUsers({ event, me }: EventUsersProps) {
     invitedEventUsers.sort(sortEventUsers);
     usersGroupProps.push({
       eventId: event.eventId,
-      title: "Invited",
+      title: "INVITED ",
       eventUsers: invitedEventUsers,
       startRank: null,
     });
   }
 
   return (
-    <Stack spacing={2} mt={'0.5rem'}>
+    <Stack spacing={0} mt={'0.5rem'}>
       {usersGroupProps.map(props => (
         <EventUsersGroup key={props.title}{...props} />
       ))}
@@ -104,8 +103,15 @@ type EventUsersGroupProps = {
 
 function EventUsersGroup({ eventId, title, eventUsers, startRank }: EventUsersGroupProps) {
   return (
-    <Stack spacing={2}>
-      <Heading size={'sm'} fontWeight={300}>{title}</Heading>
+    <Stack spacing={0}>
+      <Heading
+        p={'0.5rem'}
+        fontSize={'9pt'}
+        fontWeight={500}
+        textAlign={'center'}
+      >
+        {title}
+      </Heading>
       <Accordion allowMultiple allowToggle>
         <Stack spacing={1}>
           {eventUsers.map((eventUser: EventUser, i: number) => (
@@ -246,18 +252,30 @@ function EventUserCard({ eventId, eventUser, ranking }: EventUserCardProps) {
       </Flex>
       <AccordionPanel p={'0.5rem'}>
         <Stack spacing={1}>
-          <Text>
-            {eventUser.states.joined ? `${getFormattedTime(eventUser.states.joined.timestampMs)} • ` : <Spinner size={'sm'} />}
-            {' '}Joined
-          </Text>
-          <Text>
-            {eventUser.states.departed ? `${getFormattedTime(eventUser.states.departed.timestampMs)} • ` : <Spinner size={'sm'} />}
-            {' '}Departed
-          </Text>
-          <Text>
-            {eventUser.states.arrived ? `${getFormattedTime(eventUser.states.arrived.timestampMs)} • ` : <Spinner size={'sm'} />}
-            {' '}Arrived
-          </Text>
+          {eventUser.states.joined ? (
+            <Text>{`${getFormattedTime(eventUser.states.joined.timestampMs)} • Joined`}</Text>
+          ) : (
+            <Flex align='center'>
+              <Spinner size={'sm'} mr={'1rem'} />
+              <Text>{' '}Joined</Text>
+            </Flex>
+          )}
+          {eventUser.states.departed ? (
+            <Text>{`${getFormattedTime(eventUser.states.departed.timestampMs)} • Departed`}</Text>
+          ) : (
+            <Flex align='center'>
+              <Spinner size={'sm'} mr={'1rem'} />
+              <Text>{' '}Departed</Text
+              ></Flex>
+          )}
+          {eventUser.states.arrived ? (
+            <Text>{`${getFormattedTime(eventUser.states.arrived.timestampMs)} • Arrived`}</Text>
+          ) : (
+            <Flex align='center'>
+              <Spinner size={'sm'} mr={'1rem'} />
+              <Text>{' '}Arrived</Text>
+            </Flex>
+          )}
         </Stack>
       </AccordionPanel>
     </AccordionItem>

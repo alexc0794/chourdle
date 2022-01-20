@@ -24,7 +24,7 @@ function RecommendationSchedule({ event, eta }: { event: Event, eta: Eta | null 
   const [showModal, setShowModal] = useState<boolean>(false);
   const hideModal = useCallback(() => setShowModal(false), []);
   return (
-    <Card>
+    <Card p={'1rem'}>
       <Flex align={'center'}>
         <Text>Set up a meetup time</Text>
         <Spacer />
@@ -80,7 +80,7 @@ function RecommendationArrive({ event }: { event: Event }) {
 
   const disabled = !atDestination || loading;
   return (
-    <Card>
+    <Card p={'1rem'}>
       <Flex align={'center'}>
         <Text>{atDestination ? 'You\'ve made it! Please mark your arrival.' : 'Get closer to the destination.'}</Text>
         <Spacer />
@@ -185,29 +185,25 @@ export default function EventPageRecommendation({ event, me }: EventPageRecommen
   }
 
   return (
-    <div className="EventPageRecommendation">
-      <Box bg="dark">
-        <Box className="EventPageRecommendation-body">
-          {(() => {
-            if (event.createdByUserPhoneNumber === me.phoneNumber && !event.scheduledForMs) {
-              return <RecommendationSchedule event={event} eta={eta} />;
-            }
+    <Box bg="dark">
+      {(() => {
+        if (event.createdByUserPhoneNumber === me.phoneNumber && !event.scheduledForMs) {
+          return <RecommendationSchedule event={event} eta={eta} />;
+        }
 
-            switch (me.states.next) {
-              case EventUserState.departed: {
-                return <RecommendationDepart event={event} eta={eta} />
-              }
-              case EventUserState.arrived: {
-                return <RecommendationArrive event={event} />;
-              }
-            }
+        switch (me.states.next) {
+          case EventUserState.departed: {
+            return <RecommendationDepart event={event} eta={eta} />
+          }
+          case EventUserState.arrived: {
+            return <RecommendationArrive event={event} />;
+          }
+        }
 
-            if (me.states.current === EventUserState.arrived) {
-              return <RecommendationEnd me={me} event={event} />;
-            }
-          })()}
-        </Box>
-      </Box>
-    </div>
+        if (me.states.current === EventUserState.arrived) {
+          return <RecommendationEnd me={me} event={event} />;
+        }
+      })()}
+    </Box>
   )
 }
