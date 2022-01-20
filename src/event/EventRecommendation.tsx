@@ -3,10 +3,9 @@ import { Box, Button, Flex, Modal, Spacer, Text } from '@chakra-ui/react';
 import { distance } from 'src/utils/eta';
 import usePosition from '@/hooks/usePosition';
 import { Eta, Event, EventUser, EventUserState, Position } from '@/interfaces';
-// import { selectEta } from '../../selectors';
 // import { MemoizedEventPageScheduleTimer } from '../EventPageSchedule';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
-import { endEvent, transitionEventUserState } from './redux';
+import { endEvent, selectEta, transitionEventUserState } from './redux';
 import Card from '@/components/Card';
 
 
@@ -159,7 +158,7 @@ type EventPageRecommendationProps = {
 };
 
 export default function EventPageRecommendation({ event, me }: EventPageRecommendationProps) {
-  const eta: Eta | null = null; // useAppSelector(selectEta) || null;
+  const eta: Eta | null = useAppSelector(selectEta) || null;
 
   if (!me) {
     return null;

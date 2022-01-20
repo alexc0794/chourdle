@@ -9,6 +9,7 @@ import {
   updateTransportMode as updateTransportModeApi,
   transitionEventUserState as transitionEventUserStateApi,
   endEvent as endEventApi,
+  scheduleEvent as scheduleEventApi,
 } from "../api";
 
 
@@ -23,7 +24,7 @@ export const fetchEvent = createAsyncThunk(
 );
 
 export const createEvent = createAsyncThunk(
-  'event/createEvent',
+  'event/create',
   async (
     { name, place, transportMode}: { name: string, place: Place, transportMode: TransportMode },
     { getState },
@@ -31,13 +32,13 @@ export const createEvent = createAsyncThunk(
     const state = getState() as RootState;
     const token = selectToken(state);
     if (!token) { throw new Error('no token'); }
-    const event: Event | null = await createEventApi(name, place, transportMode, token);
-    return event;
+
+    return await createEventApi(name, place, transportMode, token);
   }
 );
 
 export const updateEventName = createAsyncThunk(
-  'event/updateEventName',
+  'event/updateName',
   async (
     {eventId, name}: {eventId: string, name: string},
     { getState },
@@ -46,7 +47,21 @@ export const updateEventName = createAsyncThunk(
     const token = selectToken(state);
     if (!token) { throw new Error('no token'); }
 
-    await updateEventNameApi(eventId, name, token);
+    return await updateEventNameApi(eventId, name, token);
+  }
+);
+
+export const scheduleEvent = createAsyncThunk(
+  'event/schedule',
+  async (
+    { eventId, scheduledForMs }: { eventId: string, scheduledForMs: number },
+    { getState },
+  ) => {
+    const state = getState() as RootState;
+    const token = selectToken(state);
+    if (!token) { throw new Error('no token'); }
+
+    return await scheduleEventApi(eventId, token, scheduledForMs);
   }
 );
 

@@ -18,3 +18,17 @@ export const selectMe = createSelector(
 );
 
 export const selectTransportMode = (state: RootState) => state.event.transportMode;
+
+export const selectEta = createSelector(
+  selectEvent,
+  selectPhoneNumber,
+  (event: Event | null, phoneNumber: string | null) => {
+    const me = event && phoneNumber ? event.eventUsers.find(
+      (eventUser) => eventUser.phoneNumber === phoneNumber
+    ) : null
+    if (me && me.etas.length > 0) {
+      return me.etas[me.etas.length - 1];
+    }
+    return null;
+  }
+);
