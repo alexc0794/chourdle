@@ -24,9 +24,9 @@ export default function UserActions({ event, me }: UserActionsProps) {
   };
 
   return (
-    <ButtonGroup>
+    <ButtonGroup padding={'1rem'}>
       {phoneNumbers.length > 1 && (
-        <Button onClick={handleTextClick}>
+        <Button onClick={handleTextClick} colorScheme={'blue'}>
           Text All
         </Button>
       )}

@@ -11,7 +11,7 @@ import { useAppSelector } from "@/hooks/useRedux";
 import { selectPhoneNumber } from "src/session/redux";
 import { getFormattedTime } from "src/utils/eta";
 import UserActions from "./UserActions";
-import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Badge, Button, ButtonGroup, Flex, Heading, IconButton, Spinner, Stack } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Badge, ButtonGroup, Flex, Heading, IconButton, Spinner, Stack, Text } from "@chakra-ui/react";
 
 
 const KM_TO_MILES_CONVERSION = 0.621371; // 1 km = 0.621371 miles
@@ -86,12 +86,12 @@ export default function EventUsers({ event, me }: EventUsersProps) {
   }
 
   return (
-    <div className="EventPageUsers">
+    <Stack spacing={2} mt={'0.5rem'}>
       {usersGroupProps.map(props => (
         <EventUsersGroup key={props.title}{...props} />
       ))}
       <UserActions event={event} me={me} />
-    </div>
+    </Stack>
   );
 }
 
@@ -104,21 +104,19 @@ type EventUsersGroupProps = {
 
 function EventUsersGroup({ eventId, title, eventUsers, startRank }: EventUsersGroupProps) {
   return (
-    <Stack>
-      <Heading size={'sm'} className="EventPageUsers-group-header">{title}</Heading>
-      <Accordion
-        allowMultiple
-        allowToggle
-        bg={'background.dark'}
-      >
-        {eventUsers.map((eventUser: EventUser, i: number) => (
-          <EventUserCard
-            key={eventUser.phoneNumber}
-            eventId={eventId}
-            eventUser={eventUser}
-            ranking={startRank !== null ? startRank + i : null}
-          />
-        ))}
+    <Stack spacing={2}>
+      <Heading size={'sm'} fontWeight={300}>{title}</Heading>
+      <Accordion allowMultiple allowToggle>
+        <Stack spacing={1}>
+          {eventUsers.map((eventUser: EventUser, i: number) => (
+            <EventUserCard
+              key={eventUser.phoneNumber}
+              eventId={eventId}
+              eventUser={eventUser}
+              ranking={startRank !== null ? startRank + i : null}
+            />
+          ))}
+        </Stack>
       </Accordion>
     </Stack>
   );
@@ -195,13 +193,13 @@ function EventUserCard({ eventId, eventUser, ranking }: EventUserCardProps) {
   }
 
   return (
-    <AccordionItem>
+    <AccordionItem border={'none'} bg={'background.dark'}>
       <Flex>
-        <AccordionButton bg="dark" className="EventPageUsers-card--outer">
+        <AccordionButton bg="dark" p={0}>
           <Flex>
-            <div className="EventPageUsers-card-profile">
+            <Stack justify={'center'} align={'center'}>
               {ranking && (
-                <Badge {...(() => {
+                <Badge m={'0.5rem'} {...(() => {
                   switch (ranking) {
                     case 1:
                       return {
@@ -233,33 +231,33 @@ function EventUserCard({ eventId, eventUser, ranking }: EventUserCardProps) {
                     }
                   })()}</Badge>
               )}
-            </div>
-            <div className="EventPageUsers-card-content">
-              <div className="EventPageUsers-card-title">
+            </Stack>
+            <Flex direction={'column'} align={'start'} p={'0.5rem'}>
+              <Text fontSize={'12pt'} fontWeight={300}>
                 {eventUser.name || eventUser.phoneNumber}{' '}<strong>{buildEtaTitle(eventUser)}</strong>
-              </div>
-              <div className="EventPageUsers-card-description">
+              </Text>
+              <Text fontSize={'10pt'} fontWeight={300} color={'font.lightgray'}>
                 {buildEtaDescription(eventUser)}
-              </div>
-            </div>
+              </Text>
+            </Flex>
           </Flex>
         </AccordionButton>
         {!isMe && <EventUserCardActions eventUser={eventUser} eventId={eventId} />}
       </Flex>
-      <AccordionPanel>
-        <Stack>
-          <div>
-            {eventUser.states.joined ? `${getFormattedTime(eventUser.states.joined.timestampMs)} • ` : <Spinner />}
+      <AccordionPanel p={'0.5rem'}>
+        <Stack spacing={1}>
+          <Text>
+            {eventUser.states.joined ? `${getFormattedTime(eventUser.states.joined.timestampMs)} • ` : <Spinner size={'sm'} />}
             {' '}Joined
-          </div>
-          <div>
-            {eventUser.states.departed ? `${getFormattedTime(eventUser.states.departed.timestampMs)} • ` : <Spinner />}
+          </Text>
+          <Text>
+            {eventUser.states.departed ? `${getFormattedTime(eventUser.states.departed.timestampMs)} • ` : <Spinner size={'sm'} />}
             {' '}Departed
-          </div>
-          <div>
-            {eventUser.states.arrived ? `${getFormattedTime(eventUser.states.arrived.timestampMs)} • ` : <Spinner />}
+          </Text>
+          <Text>
+            {eventUser.states.arrived ? `${getFormattedTime(eventUser.states.arrived.timestampMs)} • ` : <Spinner size={'sm'} />}
             {' '}Arrived
-          </div>
+          </Text>
         </Stack>
       </AccordionPanel>
     </AccordionItem>
