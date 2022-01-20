@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Box, Button, Flex, Modal, Spacer, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Modal, ModalContent, ModalOverlay, Spacer, Text } from '@chakra-ui/react';
 import { distance } from 'src/utils/eta';
 import usePosition from '@/hooks/usePosition';
 import { Eta, Event, EventUser, EventUserState, Position } from '@/interfaces';
@@ -7,6 +7,7 @@ import { Eta, Event, EventUser, EventUserState, Position } from '@/interfaces';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { endEvent, selectEta, transitionEventUserState } from './redux';
 import Card from '@/components/Card';
+import { MemoizedEventPageScheduleTimer } from './EventScheduler';
 
 
 const METERS_TO_MILES_CONVERSION = 0.000621371;
@@ -23,15 +24,34 @@ function RecommendationSchedule({ event, eta }: { event: Event, eta: Eta | null 
   const [showModal, setShowModal] = useState<boolean>(false);
   const hideModal = useCallback(() => setShowModal(false), []);
   return (
-    <>
-      <div>Set up a meetup time </div>
-      <Button onClick={() => setShowModal(true)}>
-        Schedule
-      </Button>
-      <Modal isCentered isOpen={showModal} onClose={hideModal}>
-        Scheduled
-      </Modal>
-    </>
+    <Card>
+      <Flex align={'center'}>
+        <Text>Set up a meetup time</Text>
+        <Spacer />
+        <Button
+          onClick={() => setShowModal(true)}
+          colorScheme='blue'
+        >
+          Schedule
+        </Button>
+        <Modal
+          isCentered
+          variant="light"
+          isOpen={showModal}
+          onClose={hideModal}
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <MemoizedEventPageScheduleTimer
+              eventId={event.eventId}
+              scheduledForMs={event.scheduledForMs}
+              eta={eta}
+              onSchedule={hideModal}
+            />
+          </ModalContent>
+        </Modal>
+      </Flex>
+    </Card>
   );
 }
 
