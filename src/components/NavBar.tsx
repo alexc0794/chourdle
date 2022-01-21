@@ -27,20 +27,19 @@ const NavBar = () => {
       alignItems="center"
       justifyContent="center"
       p="0.5rem"
-      bg="background.dark"
+      bg="black"
     >
       <Box
         as="nav"
         display="flex"
         justifyContent="space-between"
-        padding="0.5rem 1rem"
         width="90%"
+        p="0.5rem 1rem"
       >
-
         {LINKS.map(({ display, url }) => (
           <Link key={display} href={url}>
             <a>
-              <Text p="0.5rem 1rem" color="white">{display}</Text>
+              <Text color='font.lightgray'>{display}</Text>
             </a>
           </Link>
         ))}
