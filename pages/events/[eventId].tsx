@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { fetchEvent, selectEvent, selectMe } from "src/event/redux";
 // import { wrapper } from "src/store";
 import { Event, EventUser } from "@/interfaces";
-import EventHeader from "src/event/EventHeader";
+import EventHeader, { EventHeaderSkeleton } from "src/event/EventHeader";
 import EventTransportMode from "src/event/EventTransportMode";
 import { useEffect } from "react";
 import { selectToken } from "src/session/redux";
@@ -29,6 +29,14 @@ const EventPage = () => {
 
   useEffect(() => { load(eventId); }, [token, eventId]);
   useInterval(() => load(eventId), EVENT_REFRESH_RATE_MS);
+
+  if (eventId !== event?.eventId) {
+    return (
+      <Stack>
+        <EventHeaderSkeleton />
+      </Stack>
+    );
+  }
 
   return (
     <div>

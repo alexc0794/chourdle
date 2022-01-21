@@ -10,7 +10,8 @@ import { useAppSelector } from "@/hooks/useRedux";
 import { selectPhoneNumber } from "src/session/redux";
 import { getFormattedTime } from "src/utils/eta";
 import UserActions from "./UserActions";
-import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Badge, ButtonGroup, Flex, Heading, IconButton, Spinner, Stack, Text } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Badge, Flex, Heading, IconButton, Spinner, Stack, Text } from "@chakra-ui/react";
+import { getTimeUnits } from "src/utils/time";
 
 
 const KM_TO_MILES_CONVERSION = 0.621371; // 1 km = 0.621371 miles
@@ -148,16 +149,21 @@ function EventUserCard({ eventId, eventUser, ranking }: EventUserCardProps) {
     ) {
       const recentEta = eventUser.etas[eventUser.etas.length - 1];
       const diffMs = recentEta.durationMs + recentEta.recordedAtMs - Date.now();
-      const diffMin = Math.round(diffMs / 1000 / 60);
-      if (diffMin > 0) {
+      const { days, hours, minutes } = getTimeUnits(diffMs);
+      if (diffMs > 0) {
         title += ' • ';
         title += (() => {
-          const hoursAgo = Math.floor(diffMin / 60);
-          const minutesAgo = diffMin % 60;
-          return [
-            (hoursAgo ? `${Math.floor(diffMin / 60)} hr` : ''),
-            (minutesAgo ? `${diffMin % 60} min` : '')
-          ].join(' ').trim()
+          const units: string[] = [];
+          if (days) {
+            units.push(days === 1 ? `1 day` : `${days} days`);
+          }
+          if (hours) {
+            units.push(`${hours} hr`);
+          }
+          if (minutes) {
+            units.push(`${minutes} min`);
+          }
+          return units.join(' ').trim();
         })();
 
         if (recentEta.transportMode !== undefined) {
@@ -240,7 +246,8 @@ function EventUserCard({ eventId, eventUser, ranking }: EventUserCardProps) {
             </Stack>
             <Flex direction={'column'} align={'start'} p={'0.5rem'}>
               <Text fontSize={'12pt'} fontWeight={300}>
-                {eventUser.name || eventUser.phoneNumber}{' '}<strong>{buildEtaTitle(eventUser)}</strong>
+                {eventUser.name || eventUser.phoneNumber}{' '}
+                {buildEtaTitle(eventUser)}
               </Text>
               <Text fontSize={'10pt'} fontWeight={300} color={'font.lightgray'}>
                 {buildEtaDescription(eventUser)}
@@ -309,23 +316,24 @@ function EventUserCardActions({ eventUser, eventId }: EventUserCardActionsProps)
   }
 
   return (
-    <ButtonGroup alignItems={'center'}>
+    <Flex align={'center'}>
       <IconButton
         aria-label='Chat with text message'
         onClick={() => handleMessageClick(eventUser, eventId)}
         disabled={!eventUser.phoneNumber}
         icon={<span>💬</span>}
-        size={'sm'}
+        size={'md'}
         variant={'primary'}
       />
       <IconButton
+        m={0}
         aria-label='View profile'
         onClick={() => push(`/profile/${eventUser.phoneNumber}`)}
         disabled={!eventUser.phoneNumber}
         icon={<span>👤</span>}
-        size={'sm'}
+        size={'md'}
         variant={'primary'}
       />
-    </ButtonGroup>
+    </Flex>
   );
 }

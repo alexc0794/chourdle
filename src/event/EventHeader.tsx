@@ -3,7 +3,7 @@ import { TRANSPORT_MODE_TO_DIRECTIONS_MODE } from "src/constants";
 import { Event, EventUser } from "@/interfaces";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { updateEventName } from "./redux";
-import { Box, Editable, EditableInput, EditablePreview, Flex, Heading, IconButton, InputGroup, InputRightElement, Text, useEditableControls } from "@chakra-ui/react";
+import { Box, Editable, EditableInput, EditablePreview, Flex, Heading, IconButton, InputGroup, InputRightElement, Skeleton, SkeletonText, Stack, Text, useEditableControls } from "@chakra-ui/react";
 import { ChevronRightIcon } from '@chakra-ui/icons'
 
 
@@ -43,12 +43,7 @@ export default function EventHeader({ event, me, isEditable }: EventHeaderProps)
   };
 
   return (
-    <Flex
-      direction='column'
-      align='stretch'
-      justify='center'
-      p='0.5rem'
-    >
+    <Stack p='0.5rem' spacing={0}>
       <Editable
         as={Heading}
         isDisabled={!isEditable || !me}
@@ -79,7 +74,7 @@ export default function EventHeader({ event, me, isEditable }: EventHeaderProps)
           </>
         )}
       </Box>
-    </Flex>
+    </Stack>
   );
 }
 
@@ -97,5 +92,15 @@ function SubmitEditIcon() {
         {...getSubmitButtonProps()}
       />
     </InputRightElement>
+  );
+}
+
+
+export function EventHeaderSkeleton() {
+  return (
+    <Stack p={'0.5rem'}>
+      <Skeleton height={'40px'} w={'50%'} />
+      <SkeletonText noOfLines={1} />
+    </Stack>
   );
 }

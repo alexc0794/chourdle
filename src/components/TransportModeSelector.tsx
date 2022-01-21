@@ -3,6 +3,7 @@ import { Box, Button, Container, Flex, keyframes, Spacer, Text } from "@chakra-u
 import { Eta, TransportMode } from "@/interfaces";
 import useTransportMode from "@/hooks/useTransportMode";
 import Card from "./Card";
+import { getTimeUnits } from "src/utils/time";
 
 
 const shimmer = keyframes`
@@ -67,13 +68,11 @@ function TransportModeSelector({
             onClick={() => handleSelect(transportMode)}
           >
             <Flex w={'100%'} justify={'space-between'} p={'0.5rem'}>
-              <div className="TransportModeSelector-mode-name">{mode}</div>
-              <div className="TransportModeSelector-mode-details">
-                <TransportModeDetails
-                  transportMode={transportMode}
-                  googlePlaceId={googlePlaceId}
-                />
-              </div>
+              <Text>{mode}</Text>
+              <TransportModeDetails
+                transportMode={transportMode}
+                googlePlaceId={googlePlaceId}
+              />
             </Flex>
           </Card>
         );
@@ -103,13 +102,27 @@ export function TransportModeDetails({
   googlePlaceId,
 }: TransportModeDetailsProps) {
   const eta: Eta | null = useTransportMode(transportMode, googlePlaceId || null);
+  let text = 'Calculating...';
+  if (eta) {
+    const { days, hours, minutes } = getTimeUnits(eta.durationMs);
+    text = (() => {
+      const units: string[] = [];
+      if (days) {
+        units.push(`${days} d`);
+      }
+      if (hours) {
+        units.push(`${hours} hr`);
+      }
+      if (minutes) {
+        units.push(`${minutes} min`);
+      }
+      return units.join(' ').trim();
+    })();
+  }
+
   return (
     <Box>
-      {eta === null ? (
-        <Text>Calculating...</Text>
-      ) : (
-        <Text>{Math.round(eta.durationMs / 1000 / 60)} minutes</Text>
-      )}
+      <Text>{text}</Text>
     </Box>
   );
 }

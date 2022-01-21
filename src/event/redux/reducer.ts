@@ -24,9 +24,12 @@ const activeEventReducer = createReducer(initialActiveEventState, builder => {
       state.loading = true;
     })
     .addCase(fetchEvent.rejected, state => {
+      state.loading = false;
       state.error = true;
     })
     .addCase(fetchEvent.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.error = false;
       state.event = payload;
       state.updatedAtMs = Date.now();
     })
