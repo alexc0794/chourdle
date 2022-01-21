@@ -13,3 +13,22 @@ export const getLocalStorageUser = (): User | null => {
   }
   return user;
 };
+
+
+export function validatePhoneNumber(phoneNumber: string): boolean {
+  let re = /^(0|[1-9][0-9]*)$/;
+  if (phoneNumber.length !== 10 || !re.test(phoneNumber)) {
+    return false;
+  }
+  return true;
+}
+
+
+export function sanitizePhoneNumber(phoneNumber: string): string {
+  const PHONE_NUMBER_LENGTH = 10;
+  const numericPhoneNumber = phoneNumber.replace(/\D/g, '');
+  if (numericPhoneNumber.length > PHONE_NUMBER_LENGTH) {
+    return numericPhoneNumber.substring(numericPhoneNumber.length - PHONE_NUMBER_LENGTH);
+  }
+  return numericPhoneNumber;
+}

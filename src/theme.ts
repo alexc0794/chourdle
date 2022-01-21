@@ -5,6 +5,7 @@ const theme = extendTheme({
   colors: {
     background: {
       dark: '#282c34',
+      gray: '#343a40',
     },
     font: {
       lightgray: 'lightgray',

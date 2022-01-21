@@ -5,6 +5,7 @@ import { RootState } from "src/store";
 import { 
   createEvent as createEventApi,
   fetchEvent as fetchEventApi, 
+  inviteGuests as inviteGuestsApi,
   updateEventName as updateEventNameApi,
   updateTransportMode as updateTransportModeApi,
   transitionEventUserState as transitionEventUserStateApi,
@@ -64,6 +65,20 @@ export const scheduleEvent = createAsyncThunk(
     return await scheduleEventApi(eventId, token, scheduledForMs);
   }
 );
+
+export const inviteGuests = createAsyncThunk(
+  'event/inviteGuests',
+  async (
+    { eventId, phoneNumbers }: { eventId: string, phoneNumbers: string[] },
+    { getState },
+  ) => {
+    const state = getState() as RootState;
+    const token = selectToken(state);
+    if (!token) { throw new Error('no token'); }
+
+    return await inviteGuestsApi(eventId, token, phoneNumbers);
+  }
+)
 
 export const updateTransportMode = createAsyncThunk(
   'event/updateTransportMode',

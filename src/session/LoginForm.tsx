@@ -16,6 +16,7 @@ import { useAppDispatch } from "@/hooks/useRedux";
 import { login } from "src/session/redux";
 import { checkVerification } from "./api";
 import Verification from "./Verification";
+import { sanitizePhoneNumber, validatePhoneNumber } from "./utils";
 
 
 export type LoginInfo = {
@@ -142,23 +143,4 @@ export default function LoginForm() {
       </Modal>
     </Stack>
   );
-}
-
-
-function validatePhoneNumber(phoneNumber: string): boolean {
-  let re = /^(0|[1-9][0-9]*)$/;
-  if (phoneNumber.length !== 10 || !re.test(phoneNumber)) {
-    return false;
-  }
-  return true;
-}
-
-
-function sanitizePhoneNumber(phoneNumber: string): string {
-  const PHONE_NUMBER_LENGTH = 10;
-  const numericPhoneNumber = phoneNumber.replace(/\D/g, '');
-  if (numericPhoneNumber.length > PHONE_NUMBER_LENGTH) {
-    return numericPhoneNumber.substring(numericPhoneNumber.length - PHONE_NUMBER_LENGTH);
-  }
-  return numericPhoneNumber;
 }

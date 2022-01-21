@@ -1,7 +1,8 @@
 import React from 'react';
 import { Event, EventUser } from '@/interfaces';
-import { Button, ButtonGroup } from '@chakra-ui/react';
-import EventEndAction from './EndAction';
+import { Button, ButtonGroup, Flex } from '@chakra-ui/react';
+import EndAction from './EndAction';
+import InviteAction from './InviteAction';
 
 
 type UserActionsProps = {
@@ -24,13 +25,14 @@ export default function UserActions({ event, me }: UserActionsProps) {
   };
 
   return (
-    <ButtonGroup padding={'1rem'}>
+    <Flex padding={'2rem'} justify={'space-evenly'} align={'center'}>
       {phoneNumbers.length > 1 && (
         <Button onClick={handleTextClick} colorScheme={'blue'}>
           Text All
         </Button>
       )}
-      <EventEndAction event={event} />
-    </ButtonGroup>
+      <InviteAction event={event} />
+      <EndAction event={event} />
+    </Flex>
   );
 }
