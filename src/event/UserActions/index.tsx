@@ -1,6 +1,7 @@
 import React from 'react';
 import { Event, EventUser } from '@/interfaces';
 import { Button, ButtonGroup, Flex } from '@chakra-ui/react';
+import { ChatIcon } from '@chakra-ui/icons';
 import EndAction from './EndAction';
 import InviteAction from './InviteAction';
 
@@ -25,14 +26,26 @@ export default function UserActions({ event, me }: UserActionsProps) {
   };
 
   return (
-    <Flex padding={'2rem'} justify={'space-evenly'} align={'center'}>
+    <ButtonGroup
+      display={'flex'}
+      flexDirection={'row'}
+      padding={'1rem 0'}
+      justifyContent={'space-evenly'}
+      grow={1}
+      size={'sm'}
+    >
       {phoneNumbers.length > 1 && (
-        <Button onClick={handleTextClick} colorScheme={'blue'}>
+        <Button
+          variant={'outline'}
+          onClick={handleTextClick}
+          colorScheme={'blue'}
+          leftIcon={<ChatIcon />}
+        >
           Text All
         </Button>
       )}
       <InviteAction event={event} />
       <EndAction event={event} />
-    </Flex>
+    </ButtonGroup>
   );
 }

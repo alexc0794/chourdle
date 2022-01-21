@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import EventRecommendation from "src/event/EventRecommendation";
 import EventPageSchedule from "src/event/EventScheduler";
 import EventUsers from "src/event/EventUsers";
+import UserActions from "src/event/UserActions";
 
 
 const EVENT_REFRESH_RATE_MS = IS_DEV ? 5000 : 60000;
@@ -53,6 +54,7 @@ const EventPage = () => {
               />
               <EventRecommendation event={event} me={me} />
               <EventUsers event={event} me={me} />
+              <UserActions event={event} me={me} />
             </Stack>
           )}
         </>

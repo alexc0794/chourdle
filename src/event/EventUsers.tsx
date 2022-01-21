@@ -9,7 +9,6 @@ import { sortEventUsers } from "./utils";
 import { useAppSelector } from "@/hooks/useRedux";
 import { selectPhoneNumber } from "src/session/redux";
 import { getFormattedTime } from "src/utils/eta";
-import UserActions from "./UserActions";
 import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Badge, Flex, Heading, IconButton, Spinner, Stack, Text } from "@chakra-ui/react";
 import { getTimeUnits } from "src/utils/time";
 
@@ -90,7 +89,6 @@ export default function EventUsers({ event, me }: EventUsersProps) {
       {usersGroupProps.map(props => (
         <EventUsersGroup key={props.title}{...props} />
       ))}
-      <UserActions event={event} me={me} />
     </Stack>
   );
 }

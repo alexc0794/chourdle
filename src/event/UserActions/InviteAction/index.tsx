@@ -41,8 +41,7 @@ export default function InviteAction({ event }: InviteActionProps) {
   return (
     <>
       <Button
-        className="EventPageInvite"
-        variant="link"
+        variant="outline"
         onClick={() => setShow(true)}
         disabled={loading}
         leftIcon={<SmallAddIcon />}

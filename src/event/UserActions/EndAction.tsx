@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Event } from "@/interfaces";
 import { endEvent } from '../redux';
 import { Button, ButtonGroup, Modal, ModalContent } from '@chakra-ui/react';
+import { SmallCloseIcon } from '@chakra-ui/icons';
 
 
 export default function EndAction({ event }: { event: Event }) {
@@ -18,7 +19,8 @@ export default function EndAction({ event }: { event: Event }) {
     <>
       <Button
         onClick={() => setShow(true)}
-        variant="outline"
+        variant="link"
+        leftIcon={<SmallCloseIcon />}
       >
         End
       </Button>
