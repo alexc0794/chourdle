@@ -37,7 +37,7 @@ export default function EventPageSchedule({ event, me }: EventPageScheduleProps)
         >
           Your Projected Arrival
         </Heading>
-        <Stack spacing={0}>
+        <Stack spacing={0} flexGrow={1} justify={'center'}>
           {!timeMs && loading && (
             <Spinner size='lg' />
           )}
