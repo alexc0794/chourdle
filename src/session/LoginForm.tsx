@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, useEffect } from "react";
 import {
   Box,
   Button,
+  Heading,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -24,7 +25,11 @@ export type LoginInfo = {
   name: string;
 };
 
-export default function LoginForm() {
+export default function LoginForm({
+  onLogin
+}: {
+  onLogin?: () => void
+}) {
   const dispatch = useAppDispatch();
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -80,20 +85,24 @@ export default function LoginForm() {
     setShowVerification(false);
     const loginInfo: LoginInfo = { phoneNumber, name };
     window.localStorage.setItem("login", JSON.stringify(loginInfo));
-    dispatch(login({
+    await dispatch(login({
       phoneNumber,
       name,
     }));
     setIsLoading(false);
+    if (onLogin !== undefined) onLogin();
   }
 
   return (
     <Stack spacing={4}>
-      <InputGroup size="lg">
+      <Heading>Log in</Heading>
+      <InputGroup
+        size={'lg'}
+        fontSize={'16pt'}
+      >
         <InputLeftAddon color='black' bgColor='gray.300'>Name</InputLeftAddon>
         <Input
           variant="outline"
-          size='lg'
           type='text'
           onChange={handleChangeName}
           value={name}
@@ -101,7 +110,10 @@ export default function LoginForm() {
           color='black'
         />
       </InputGroup>
-      <InputGroup size="lg">
+      <InputGroup
+        size={'lg'}
+        fontSize={'16pt'}
+      >
         <InputLeftAddon color='black' bgColor='gray.300'>Phone</InputLeftAddon>
         <Input
           type='tel'
@@ -117,7 +129,6 @@ export default function LoginForm() {
           disabled={!isLoginValid}
           isLoading={isLoading}
           onClick={handleSubmit}
-          colorScheme='blue'
         >
           Sign in
         </Button>

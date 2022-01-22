@@ -15,4 +15,8 @@ export default function useLoginRedirect() {
       })}`);
     }
   }, [isLoggedIn]);
+
+  return {
+    isLoggedIn
+  };
 }

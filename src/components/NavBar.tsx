@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const HOME_LINK = {
   display: "Home",
-  url: "/"
+  url: "/home"
 };
 const EVENT_LINK = {
   display: "Events",

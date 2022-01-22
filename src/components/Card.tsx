@@ -1,18 +1,7 @@
 import { ReactElement } from "react";
-import { Box, keyframes } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import { shimmer } from "src/chakra/animation";
 
-
-const shimmer = keyframes`
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-`;
 
 type CardProps = {
   children: ReactElement,

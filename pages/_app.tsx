@@ -1,11 +1,10 @@
 import '@/styles/globals.css'
-import { Component, ReactElement } from 'react';
+import { Component } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ChakraProvider } from '@chakra-ui/react';
-import theme from "src/theme";
+import theme from "src/chakra/theme";
 import { wrapper } from 'src/store';
-import NavBar from '@/components/NavBar';
 
 
 class MyApp extends Component<AppProps> {
@@ -14,6 +13,7 @@ class MyApp extends Component<AppProps> {
     return (
       <>
         <Head>
+          <title>Meetup</title>
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="theme-color" content="#000000" />
@@ -21,24 +21,11 @@ class MyApp extends Component<AppProps> {
           <link rel="icon" href="/image/favicon.ico" />
         </Head>
         <ChakraProvider theme={theme}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <Component {...pageProps} />
         </ChakraProvider>
       </>
     );
   }
-
-}
-
-
-const Layout = ({ children }: { children: ReactElement }) => {
-  return (
-    <div>
-      {children}
-      <NavBar />
-    </div>
-  );
 }
 
 export default wrapper.withRedux(MyApp);

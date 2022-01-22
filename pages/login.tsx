@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { Box } from '@chakra-ui/react';
+import { Box, Modal, ModalBody, ModalContent, ModalOverlay } from '@chakra-ui/react';
 import { useAppSelector } from '@/hooks/useRedux';
 import { selectToken } from 'src/session/redux';
 import LoginForm from 'src/session/LoginForm';
@@ -13,13 +13,19 @@ export default function Login() {
     if (redirectPath && typeof redirectPath === "string") {
       router.push(redirectPath);
     } else {
-      router.push('/');
+      router.push('/home');
     }
   }
 
   return (
-    <Box position='fixed' bottom='10%' width='100%' padding='1rem'>
-      <LoginForm />
-    </Box>
-  );
+    <Modal isOpen isCentered onClose={() => { }}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalBody>
+          <LoginForm />
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  )
+
 }

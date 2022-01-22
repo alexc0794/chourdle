@@ -1,5 +1,6 @@
 import useLoginRedirect from "src/hooks/useLoginRedirect";
 import { useEffect } from "react";
+import NavBar from "@/components/NavBar";
 
 
 export default function Events() {
@@ -11,8 +12,9 @@ export default function Events() {
     load();
   }, []);
   return (
-    <div>
+    <>
       Events
-    </div>
+      <NavBar />
+    </>
   )
 }

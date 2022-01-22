@@ -1,22 +1,11 @@
 import React, { useState } from "react";
-import { Box, Button, Container, Flex, keyframes, Spacer, Text } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Spacer, Text } from "@chakra-ui/react";
 import { Eta, TransportMode } from "@/interfaces";
 import useTransportMode from "@/hooks/useTransportMode";
 import Card from "./Card";
 import { getTimeUnits } from "src/utils/time";
+import { shimmer } from "src/chakra/animation";
 
-
-const shimmer = keyframes`
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-`;
 
 type TransportModeSelectorProps = {
   type: "Create" | "Join";

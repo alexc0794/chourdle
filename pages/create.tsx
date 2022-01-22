@@ -7,6 +7,7 @@ import TransportModeSelector from "@/components/TransportModeSelector";
 import { useRouter } from "next/router";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { createEvent } from "src/event/redux";
+import NavBar from "@/components/NavBar";
 
 
 export default function Create() {
@@ -42,31 +43,34 @@ export default function Create() {
     } catch { }
   };
 
-  const handleCancelClick = () => push('/');
+  const handleCancelClick = () => push('/home');
 
   return (
-    <Stack>
-      <SearchBar
-        autoFocus
-        onSelect={handleSearchBarSelect}
-      />
-      {searchResult && (
-        <TransportModeSelector
-          type="Create"
-          googlePlaceId={searchResult.place.googlePlaceId}
-          onSelect={handleTransportModeSelect}
+    <>
+      <Stack>
+        <SearchBar
+          autoFocus
+          onSelect={handleSearchBarSelect}
         />
-      )}
-      <Flex justify={'center'}>
-        <Button
-          colorScheme={'blue'}
-          size={'lg'}
-          variant={'link'}
-          onClick={handleCancelClick}
-        >
-          Cancel
-        </Button>
-      </Flex>
-    </Stack>
+        {searchResult && (
+          <TransportModeSelector
+            type="Create"
+            googlePlaceId={searchResult.place.googlePlaceId}
+            onSelect={handleTransportModeSelect}
+          />
+        )}
+        <Flex justify={'center'}>
+          <Button
+            colorScheme={'blue'}
+            size={'lg'}
+            variant={'link'}
+            onClick={handleCancelClick}
+          >
+            Cancel
+          </Button>
+        </Flex>
+      </Stack>
+      <NavBar />
+    </>
   );
 }
