@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BASE_API_URL } from "@/config";
-import { User } from "@/interfaces";
+import { User, UserStats } from "@/interfaces";
 
 
 export async function getFollowers(token: string): Promise<User[]> {
@@ -29,5 +29,19 @@ export async function getFollowing(token: string): Promise<User[]> {
   } catch (e) {
     console.error(e);
     return [];
+  }
+}
+
+export async function fetchUserStats(token: string): Promise<UserStats | null> {
+  const headers = {
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+
+  try {
+    const response = await axios.get(`${BASE_API_URL}/user-stats`, { headers });
+    return response.data;
+  } catch (e) {
+    console.error(e);
+    return null;
   }
 }

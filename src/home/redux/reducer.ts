@@ -3,10 +3,6 @@ import { Event } from '@/interfaces';
 import { fetchActiveEvents } from './actions';
 
 
-// type HomeState = {
-//   activeEvents: ActiveEventsState;
-// };
-
 type ActiveEventsState = {
   events: Event[];
   updatedAtMs: number | null;
@@ -15,10 +11,10 @@ type ActiveEventsState = {
 };
 
 const initialActiveEventsState: ActiveEventsState = {
-    events: [],
-    updatedAtMs: null,
-    loading: false,
-    error: false,
+  events: [],
+  updatedAtMs: null,
+  loading: false,
+  error: false,
 };
 
 const activeEventsReducer = createReducer(initialActiveEventsState, builder => {

@@ -26,5 +26,5 @@ export interface UserStats {
   totalEvents: number | null;
   sumMinutes: number | null;
   avgMinutes: number | null;
-  favoriteTransportMode: TransportMode;
+  favoriteTransportMode: TransportMode | null;
 }

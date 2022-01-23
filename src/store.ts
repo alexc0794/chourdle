@@ -9,12 +9,14 @@ import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 import { homeReducer } from './home/redux';
 import { sessionReducer } from './session/redux';
 import { eventReducer } from './event/redux';
+import { profileReducer } from './profile/redux';
 
 
 const combinedReducer = combineReducers({
   session: sessionReducer,
   home: homeReducer,
   event: eventReducer,
+  profile: profileReducer,
 });
 
 const reducer = (

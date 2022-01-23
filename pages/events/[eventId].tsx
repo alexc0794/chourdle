@@ -6,7 +6,6 @@ import { Event, EventUser } from "@/interfaces";
 import EventHeader, { EventHeaderSkeleton } from "src/event/EventHeader";
 import EventTransportMode from "src/event/EventTransportMode";
 import { useEffect } from "react";
-import { selectToken } from "src/session/redux";
 import { IS_DEV } from "@/config";
 import { useRouter } from "next/router";
 import EventRecommendation from "src/event/EventRecommendation";
@@ -23,13 +22,12 @@ const EventPage = () => {
   const eventId = query.eventId as string || null;
   const event: Event | null = useAppSelector(selectEvent);
   const me: EventUser | null = useAppSelector(selectMe);
-  const token = useAppSelector(selectToken);
   const dispatch = useAppDispatch();
   const load = async (eventId: string | null) => {
     if (eventId) await dispatch(fetchEvent(eventId));
   }
 
-  useEffect(() => { load(eventId); }, [token, eventId]);
+  useEffect(() => { load(eventId); }, [eventId]);
   useInterval(() => load(eventId), EVENT_REFRESH_RATE_MS);
 
   if (eventId !== event?.eventId) {
