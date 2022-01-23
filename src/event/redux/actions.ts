@@ -1,8 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { Event, EventUserState, Place, Position, TransportMode } from "@/interfaces";
+import { Eta, Event, EventUserState, Place, Position, TransportMode } from "@/interfaces";
 import { selectToken } from "src/session/redux";
 import { RootState } from "src/store";
 import { 
+  addEventUserEta as addEventUserEtaApi,
   createEvent as createEventApi,
   fetchEvent as fetchEventApi, 
   inviteGuests as inviteGuestsApi,
@@ -77,6 +78,21 @@ export const inviteGuests = createAsyncThunk(
     if (!token) { throw new Error('no token'); }
 
     return await inviteGuestsApi(eventId, token, phoneNumbers);
+  }
+);
+
+export const addEventUserEta = createAsyncThunk(
+  'event/addEventUserEta',
+  async (
+    { eventId, eta }: { eventId: string, eta: Eta },
+    { getState }
+  ): Promise<Event | null> => {
+    const state = getState() as RootState;
+    const token = selectToken(state);
+    if (!token) { throw new Error('no token'); }
+    
+    const event = await addEventUserEtaApi(eventId, token, eta);
+    return event;
   }
 )
 

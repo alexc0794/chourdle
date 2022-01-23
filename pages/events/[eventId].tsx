@@ -14,6 +14,7 @@ import EventUsers from "src/event/EventUsers";
 import UserActions from "src/event/UserActions";
 import NavBar from "@/components/NavBar";
 import useLoginRedirect from "@/hooks/useLoginRedirect";
+import EventTracker from "src/event/EventTracker";
 
 
 const EVENT_REFRESH_RATE_MS = IS_DEV ? 10000 : 60000;
@@ -46,6 +47,7 @@ const EventPage = () => {
           <EventHeader event={event} me={me} isEditable />
           {me && (
             <Stack spacing={1} p={'0 0.5rem'}>
+              <EventTracker event={event} me={me} />
               <EventPageSchedule event={event} me={me} />
               <EventTransportMode
                 eventId={event.eventId}
