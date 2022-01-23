@@ -10,12 +10,12 @@ export default function useLoginRedirect() {
   const phoneNumber = useAppSelector(selectPhoneNumber);
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (router.isReady && !isLoggedIn) {
       router.push(`/login?${new URLSearchParams({
-        redirect: router.pathname,
+        redirect: router.asPath,
       })}`);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, router.isReady]);
 
   return {
     isLoggedIn,

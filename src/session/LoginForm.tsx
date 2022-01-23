@@ -26,7 +26,7 @@ export type LoginInfo = {
 };
 
 export default function LoginForm({
-  onLogin
+  onLogin,
 }: {
   onLogin?: () => void
 }) {

@@ -1,21 +1,22 @@
-import { Center, Stack, useInterval } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { Box, Stack, useInterval } from "@chakra-ui/react";
+import { IS_DEV } from "@/config";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { fetchEvent, selectEvent, selectMe } from "src/event/redux";
 // import { wrapper } from "src/store";
 import { Event, EventUser } from "@/interfaces";
+import { fetchEvent, selectEvent, selectMe } from "src/event/redux";
 import EventHeader, { EventHeaderSkeleton } from "src/event/EventHeader";
 import EventTransportMode from "src/event/EventTransportMode";
-import { useEffect } from "react";
-import { IS_DEV } from "@/config";
-import { useRouter } from "next/router";
 import EventRecommendation from "src/event/EventRecommendation";
 import EventPageSchedule from "src/event/EventScheduler";
 import EventUsers from "src/event/EventUsers";
 import UserActions from "src/event/UserActions";
 import NavBar from "@/components/NavBar";
+import useLoginRedirect from "@/hooks/useLoginRedirect";
 
 
-const EVENT_REFRESH_RATE_MS = IS_DEV ? 5000 : 60000;
+const EVENT_REFRESH_RATE_MS = IS_DEV ? 10000 : 60000;
 
 const EventPage = () => {
   const { query } = useRouter();
@@ -26,7 +27,7 @@ const EventPage = () => {
   const load = async (eventId: string | null) => {
     if (eventId) await dispatch(fetchEvent(eventId));
   }
-
+  useLoginRedirect();
   useEffect(() => { load(eventId); }, [eventId]);
   useInterval(() => load(eventId), EVENT_REFRESH_RATE_MS);
 
