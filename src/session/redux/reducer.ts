@@ -27,7 +27,7 @@ export const sessionReducer = createReducer(initialState, builder => {
     .addCase(login.fulfilled, (state, { payload }) => {
       state.user = payload;
     })
-    .addCase(logout, state => {
+    .addCase(logout.fulfilled, state => {
       state.user = null;
     })
 });

@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import {
-  Box,
   Button,
+  Center,
   Heading,
   Input,
   InputGroup,
@@ -123,16 +123,17 @@ export default function LoginForm({
           color='black'
         />
       </InputGroup>
-      <Box display='flex' justifyContent='center'>
+      <Center>
         <Button
           size="lg"
           disabled={!isLoginValid}
           isLoading={isLoading}
           onClick={handleSubmit}
+          colorScheme={'blue'}
         >
           Sign in
         </Button>
-      </Box>
+      </Center>
       <Modal
         variant="light"
         isOpen={showVerification}

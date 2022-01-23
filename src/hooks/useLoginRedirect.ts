@@ -1,4 +1,4 @@
-import { selectToken } from "src/session/redux";
+import { selectPhoneNumber, selectToken } from "src/session/redux";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useAppSelector } from "./useRedux";
@@ -7,6 +7,7 @@ import { useAppSelector } from "./useRedux";
 export default function useLoginRedirect() {
   const router = useRouter();
   const isLoggedIn = !!useAppSelector(selectToken);
+  const phoneNumber = useAppSelector(selectPhoneNumber);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -17,6 +18,7 @@ export default function useLoginRedirect() {
   }, [isLoggedIn]);
 
   return {
-    isLoggedIn
+    isLoggedIn,
+    phoneNumber
   };
 }
