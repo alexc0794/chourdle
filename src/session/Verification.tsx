@@ -1,10 +1,9 @@
-import { FormEvent, useState } from "react";
-import { HStack, PinInput, PinInputField, Stack, Text } from "@chakra-ui/react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { Input, Stack, Text } from "@chakra-ui/react";
 import { verify } from "./api";
 
 
 const VERIFICATION_CODE_DIGITS = 6;
-const MAX_NUM_ERRORS = 3;
 
 type VerificationProps = {
   phoneNumber: string;
@@ -12,8 +11,22 @@ type VerificationProps = {
 };
 
 export default function Verification({ phoneNumber, onVerified }: VerificationProps) {
+  const [code, setCode] = useState<string>("");
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
   const [numErrors, setNumErrors] = useState<number>(0);
+
+  function handleChangeCode(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
+    if (value !== '' && !value.match(/^[0-9]+$/)) {
+      return;
+    }
+
+    setCode(value)
+    if (value.length >= VERIFICATION_CODE_DIGITS) {
+      handleVerifyCode(value)
+    }
+  }
+
   async function handleVerifyCode(verifiedCode: string) {
     setIsVerifying(true);
     const verified = await verify(phoneNumber, verifiedCode);
@@ -22,6 +35,7 @@ export default function Verification({ phoneNumber, onVerified }: VerificationPr
       onVerified();
     } else {
       setNumErrors(numErrors + 1);
+      setCode("");
     }
   }
 
@@ -30,39 +44,21 @@ export default function Verification({ phoneNumber, onVerified }: VerificationPr
       <Text>
         {`Please enter your ${VERIFICATION_CODE_DIGITS}-digit authentication code we sent to your phone.`}
       </Text>
-      {numErrors <= MAX_NUM_ERRORS && (
-        <form
-          onSubmit={(e: FormEvent<HTMLFormElement>) => {
-            e.preventDefault(); // Needed to get rid of autocomplete suggestion on Chrome
-          }}
-        >
-          <HStack>
-            <PinInput
-              size={'lg'}
-              type={'number'}
-              isDisabled={isVerifying}
-              onComplete={handleVerifyCode}
-              variant={'outline'}
-            >
-              {Array.from(Array(VERIFICATION_CODE_DIGITS)).map(() => (
-                <PinInputField />
-              ))}
-            </PinInput>
-          </HStack>
-        </form>
-      )}
-      {numErrors > 0 && (
-        <>
-          <Text color={'red'}>
-            The code you entered was incorrect.
-          </Text>
-          {numErrors > MAX_NUM_ERRORS && (
-            <Text>
-              Please try again later.
-            </Text>
-          )}
-        </>
-      )}
+      <form
+        onSubmit={(e: FormEvent<HTMLFormElement>) => {
+          e.preventDefault();
+        }}
+      >
+        <Input
+          size="lg"
+          type='number'
+          autoComplete='off'
+          maxLength={VERIFICATION_CODE_DIGITS}
+          minLength={VERIFICATION_CODE_DIGITS}
+          placeholder="XXX-XXX"
+          onChange={handleChangeCode}
+        />
+      </form>
     </Stack>
   );
 }

@@ -52,7 +52,7 @@ export default function Hero() {
           verticalAlign={'middle'}
         >
           <UnorderedList
-            animation={`${wordSlider} 12s ease-out infinite`}
+            animation={`${wordSlider} 9s ease-out infinite`}
             listStyleType={'none'}
             m={0}
           >
@@ -84,7 +84,7 @@ export default function Hero() {
           textAlign={'end'}
         >
           <UnorderedList
-            animation={`${wordSlider} 12s ease-out infinite`}
+            animation={`${wordSlider} 9s ease-out infinite`}
             listStyleType={'none'}
             m={0}
           >
