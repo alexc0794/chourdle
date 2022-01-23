@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { Box, Stack, useInterval } from "@chakra-ui/react";
+import { Stack, useInterval } from "@chakra-ui/react";
 import { IS_DEV } from "@/config";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 // import { wrapper } from "src/store";
 import { Event, EventUser } from "@/interfaces";
 import { fetchEvent, selectEvent, selectMe } from "src/event/redux";
-import EventHeader, { EventHeaderSkeleton } from "src/event/EventHeader";
+import EventHeader from "src/event/EventHeader";
 import EventTransportMode from "src/event/EventTransportMode";
 import EventRecommendation from "src/event/EventRecommendation";
 import EventPageSchedule from "src/event/EventScheduler";
@@ -33,11 +33,7 @@ const EventPage = () => {
   useInterval(() => load(eventId), EVENT_REFRESH_RATE_MS);
 
   if (eventId !== event?.eventId) {
-    return (
-      <Stack>
-        <EventHeaderSkeleton />
-      </Stack>
-    );
+    return null;
   }
 
   return (
