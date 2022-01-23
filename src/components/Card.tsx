@@ -26,6 +26,7 @@ export default function Card({
       p='0.5rem'
       width='100%'
       borderRadius='0.25rem'
+      boxShadow={' 0 0 2px black'}
       {...shimmerProps}
       {...otherProps}
     >

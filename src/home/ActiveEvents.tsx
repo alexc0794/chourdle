@@ -26,7 +26,7 @@ export default function ActiveEvents() {
   const nowMs = new Date().getTime();
 
   return (
-    <Stack>
+    <Stack p={'0 0.5rem'} spacing={2}>
       <Heading
         size='md'
         color='gray.300'
