@@ -1,11 +1,19 @@
-import { MouseEvent, useState } from "react";
+import { useMemo, useState } from "react";
 import { TRANSPORT_MODE_TO_DIRECTIONS_MODE } from "src/constants";
 import { Event, EventUser } from "@/interfaces";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { updateEventName } from "./redux";
-import { Box, Editable, EditableInput, EditablePreview, Flex, Heading, IconButton, InputGroup, InputRightElement, Skeleton, SkeletonText, Stack, Text, useEditableControls } from "@chakra-ui/react";
+import { Box, Editable, EditableInput, EditablePreview, Flex, Heading, IconButton, InputGroup, InputRightElement, LinkBox, LinkOverlay, Skeleton, SkeletonText, Stack, Text, useEditableControls } from "@chakra-ui/react";
 import { ChevronRightIcon } from '@chakra-ui/icons'
+import { getPlatform } from "src/utils/os";
 
+
+const DEFAULT_GOOGLE_MAPS_DIRECTIONS_URL = 'https://www.google.com/maps/dir/';
+const PLATFORM_TO_GOOGLE_MAPS_DIRECTIONS_URL = {
+  'Android': DEFAULT_GOOGLE_MAPS_DIRECTIONS_URL, // TODO
+  'iOS': 'comgooglemaps://',
+  'Web': DEFAULT_GOOGLE_MAPS_DIRECTIONS_URL,
+};
 
 type EventHeaderProps = {
   event: Event;
@@ -20,16 +28,38 @@ export default function EventHeader({ event, me, isEditable }: EventHeaderProps)
   const [editedName, setEditedName] = useState<string>(headerText);
   const handleEditedNameChange = (name: string) => setEditedName(name);
 
-  const handleAddressClick = (e: MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    const params = new URLSearchParams({
-      daddr: event.place.mainText || `${event.place.position.latitude},${event.place.position.longitude}`,
-      ...(me && me.transportMode !== null && me.transportMode in TRANSPORT_MODE_TO_DIRECTIONS_MODE ? {
-        directionsmode: TRANSPORT_MODE_TO_DIRECTIONS_MODE[me.transportMode]
-      } : {}),
-    });
-    window.location.href = `comgooglemaps://?${params.toString()}`
-  };
+  const platform = getPlatform();
+  const url = useMemo(() => {
+    const url = (platform && PLATFORM_TO_GOOGLE_MAPS_DIRECTIONS_URL[platform]) || DEFAULT_GOOGLE_MAPS_DIRECTIONS_URL;
+    const params = (() => {
+      let destination = `${event.place.mainText} ${event.place.secondaryText}`;
+      if (!destination.trim().length) {
+        destination = `${event.place.position.latitude},${event.place.position.longitude}`;
+      }
+
+      switch (platform) {
+        case 'iOS':
+          return new URLSearchParams({
+            daddr: destination,
+            ...(me && me.transportMode !== null && me.transportMode in TRANSPORT_MODE_TO_DIRECTIONS_MODE ? {
+              directionsmode: TRANSPORT_MODE_TO_DIRECTIONS_MODE[me.transportMode],
+            } : {}),
+          });
+        default:
+          return new URLSearchParams({
+            api: '1',
+            destination,
+            ...(event.place.googlePlaceId ? {
+              destination_place_id: event.place.googlePlaceId
+            } : {}),
+            ...(me && me.transportMode !== null && me.transportMode in TRANSPORT_MODE_TO_DIRECTIONS_MODE ? {
+              travelmode: TRANSPORT_MODE_TO_DIRECTIONS_MODE[me.transportMode],
+            } : {}),
+          });
+      }
+    })();
+    return `${url}?${params.toString()}`
+  }, [platform, event.place, me?.transportMode]);
 
   const handleSaveName = async () => {
     if (editedName !== event.eventName) {
@@ -59,21 +89,23 @@ export default function EventHeader({ event, me, isEditable }: EventHeaderProps)
           </InputGroup>
         </Flex>
       </Editable>
-      <Box
-        onClick={handleAddressClick}
-        role="link"
-        tabIndex={0}
-        aria-label="Link to Google Maps"
-      >
-        {event.eventName === event.place.mainText ? (
-          <Text fontSize='12pt' mb='0.1rem'>{'@'}{event.place.secondaryText || ''}</Text>
-        ) : (
-          <>
-            {event.place.mainText && <Text fontSize='12pt' mb='0.1rem'>{'@'}{event.place.mainText}</Text>}
-            {event.place.secondaryText && <Text fontSize='12pt' mb='0.1rem'>{event.place.secondaryText}</Text>}
-          </>
-        )}
-      </Box>
+      <LinkBox>
+        <LinkOverlay href={url} color={'font.lightgray'} fontWeight={300}>
+          <Box
+            tabIndex={0}
+            aria-label="Link to Google Maps"
+          >
+            {event.eventName === event.place.mainText ? (
+              <Text fontSize='12pt' mb='0.1rem'>{'📍 '}{event.place.secondaryText || ''}</Text>
+            ) : (
+              <>
+                {event.place.mainText && <Text fontSize='12pt' mb='0.1rem'>{'📍 '}{event.place.mainText}</Text>}
+                {event.place.secondaryText && <Text fontSize='12pt' mb='0.1rem'>{event.place.secondaryText}</Text>}
+              </>
+            )}
+          </Box>
+        </LinkOverlay>
+      </LinkBox>
     </Stack>
   );
 }
