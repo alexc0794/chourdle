@@ -36,7 +36,7 @@ function RecommendationSchedule({ event, eta }: { event: Event, eta: Eta | null 
         </Button>
         <Modal
           isCentered
-          variant="light"
+          variant={'light'}
           isOpen={showModal}
           onClose={hideModal}
         >

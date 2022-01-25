@@ -18,7 +18,12 @@ export default function Login() {
   }
 
   return (
-    <Modal isOpen isCentered onClose={() => { }}>
+    <Modal
+      isOpen
+      isCentered
+      onClose={() => { }}
+      variant={'light'}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalBody>

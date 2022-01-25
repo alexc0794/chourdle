@@ -104,9 +104,8 @@ function EventUsersGroup({ eventId, title, eventUsers, startRank }: EventUsersGr
   return (
     <Stack spacing={0}>
       <Heading
+        variant={'sm'}
         p={'0.5rem'}
-        fontSize={'9pt'}
-        fontWeight={500}
         textAlign={'center'}
       >
         {title}

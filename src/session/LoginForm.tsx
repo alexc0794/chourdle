@@ -135,7 +135,7 @@ export default function LoginForm({
         </Button>
       </Center>
       <Modal
-        variant="light"
+        variant={'light'}
         isOpen={showVerification}
         onClose={handleCloseModal}
         isCentered

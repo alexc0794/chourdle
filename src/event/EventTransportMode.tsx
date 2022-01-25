@@ -9,6 +9,7 @@ import {
   AccordionPanel,
   Button,
   Flex,
+  Heading,
   Spacer,
   Stack,
   Text
@@ -51,10 +52,10 @@ export default function EventTransportMode({
       <AccordionItem border={'none'}>
         <AccordionButton>
           <Stack w={'100%'}>
-            <Flex fontSize={'10pt'} color='font.lightgray'>
-              <Text>Commute time</Text>
+            <Flex color='font.lightgray'>
+              <Heading variant={'sm'}>Commute time</Heading>
               <Spacer />
-              <Text>Travel by</Text>
+              <Heading variant={'sm'}>Travel by</Heading>
             </Flex>
             <Flex grow={1}>
               <TransportModeDetails transportMode={transportMode} googlePlaceId={googlePlaceId} />

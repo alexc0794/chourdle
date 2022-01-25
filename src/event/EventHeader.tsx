@@ -90,11 +90,8 @@ export default function EventHeader({ event, me, isEditable }: EventHeaderProps)
         </Flex>
       </Editable>
       <LinkBox>
-        <LinkOverlay href={url} color={'font.lightgray'} fontWeight={300}>
-          <Box
-            tabIndex={0}
-            aria-label="Link to Google Maps"
-          >
+        <LinkOverlay isExternal href={url}>
+          <Box color={'font.lightgray'} fontWeight={300}>
             {event.eventName === event.place.mainText ? (
               <Text fontSize='12pt' mb='0.1rem'>{'📍 '}{event.place.secondaryText || ''}</Text>
             ) : (

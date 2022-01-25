@@ -1,5 +1,5 @@
 import { memo, useState, useCallback } from "react";
-import { Button, ButtonGroup, Center, Flex, Heading, Menu, MenuButton, MenuItem, MenuList, Modal, ModalContent, ModalOverlay, Spinner, Stack, Text } from "@chakra-ui/react";
+import { Button, ButtonGroup, Center, Flex, Heading, Menu, MenuButton, MenuItem, MenuList, Modal, ModalContent, ModalOverlay, Spinner, Stack, Stat, StatGroup, StatHelpText, StatLabel, StatNumber, Text } from "@chakra-ui/react";
 import { Event, EventUser, Eta, TransportMode } from "@/interfaces";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { scheduleEvent, selectEta } from "./redux";
@@ -22,81 +22,38 @@ export default function EventPageSchedule({ event, me }: EventPageScheduleProps)
   const closeModal = useCallback(() => setShowScheduleModal(false), []);
 
   return (
-    <Flex alignContent={'stretch'} p={'0.5rem'}>
-      <Flex
-        direction={'column'}
-        grow={1}
-        p={'0.5rem'}
-        maxW={'50%'}
-      >
-        <Heading
-          fontSize={'10pt'}
-          color={'font.lightgray'}
-          fontWeight={'400'}
-          mb={'0.5rem'}
-        >
-          Your Projected Arrival
-        </Heading>
-        <Stack spacing={0} flexGrow={1} justify={'center'}>
-          {!timeMs && loading && (
-            <Spinner size='lg' />
+    <>
+      <StatGroup p={'0.5rem'}>
+        <Stat>
+          <StatLabel>Your Projected Arrival</StatLabel>
+          {timeMs === null ? (
+            <Spinner size={'lg'} />
+          ) : (
+            <>
+              <StatNumber fontSize={'24pt'}>{getFormattedTime(timeMs)}</StatNumber>
+              <StatHelpText>{getFormattedDate(timeMs)}</StatHelpText>
+            </>
           )}
-          {!loading &&
-            (timeMs ? (
-              <>
-                <Heading fontSize={'14pt'} fontWeight={200} m={0}>
-                  {getFormattedDate(timeMs)}
-                </Heading>
-                <Heading fontSize={'24pt'} fontWeight={200} m={0}>
-                  {getFormattedTime(timeMs)}
-                </Heading>
-              </>
-            ) : (
-              <Text>--</Text>
-            ))}
-        </Stack>
-      </Flex>
-      <Flex
-        direction={'column'}
-        grow={1}
-        p={'0.5rem'}
-        maxW={'50%'}
-        onClick={openModal}
-        role="link"
-        tabIndex={0}
-        aria-label="Edit the scheduled time"
-      >
-        <Heading
-          fontSize={'10pt'}
-          color={'font.lightgray'}
-          fontWeight={'400'}
-          mb={'0.5rem'}
+        </Stat>
+        <Stat
+          aria-label={'Edit the schedule time'}
+          tabIndex={0}
+          role={'link'}
+          onClick={openModal}
         >
-          Scheduled
-        </Heading>
-        <Stack spacing={0}>
-          {(() => {
-            if (event.scheduledForMs) {
-              return (
-                <>
-                  <Heading fontSize={'14pt'} fontWeight={200} m={0}>
-                    {getFormattedDate(event.scheduledForMs)}
-                  </Heading>
-                  <Heading fontSize={'24pt'} fontWeight={200} m={0}>
-                    {getFormattedTime(event.scheduledForMs)}
-                  </Heading>
-                </>
-              );
-            } else {
-              return null;
-            }
-          })()}
-        </Stack>
-      </Flex>
+          <StatLabel>Scheduled For</StatLabel>
+          {event.scheduledForMs && (
+            <>
+              <StatNumber fontSize={'24pt'}>{getFormattedTime(event.scheduledForMs)}</StatNumber>
+              <StatHelpText>{getFormattedDate(event.scheduledForMs)}</StatHelpText>
+            </>
+          )}
+        </Stat>
+      </StatGroup >
       <Modal
         isOpen={showScheduleModal}
         onClose={closeModal}
-        variant="light"
+        variant={'light'}
       >
         <ModalOverlay />
         <ModalContent>
@@ -108,7 +65,7 @@ export default function EventPageSchedule({ event, me }: EventPageScheduleProps)
           />
         </ModalContent>
       </Modal>
-    </Flex>
+    </>
   );
 }
 
@@ -162,9 +119,9 @@ function EventPageScheduleTimer({ eventId, scheduledForMs, eta, onSchedule }: Ev
 
   const getHeader = () => {
     if (scheduledForMs) {
-      return `This event is scheduled for ${formatDate(new Date(scheduledForMs))}.`;
+      return `Scheduled for ${formatDate(new Date(scheduledForMs))}.`;
     }
-    return 'Event is unscheduled.';
+    return 'Unscheduled.';
   };
 
   const getSubmitText = () => {
@@ -181,7 +138,7 @@ function EventPageScheduleTimer({ eventId, scheduledForMs, eta, onSchedule }: Ev
 
   return (
     <Stack p={'1rem'} spacing={4}>
-      <Heading size={'md'}>{getHeader()}</Heading>
+      <Heading variant={'lg'}>{getHeader()}</Heading>
       <Stack
         display={'flex'}
         direction={'row'}

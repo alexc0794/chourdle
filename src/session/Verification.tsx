@@ -46,7 +46,7 @@ export default function Verification({ phoneNumber, onVerified }: VerificationPr
       </Text>
       <form
         onSubmit={(e: FormEvent<HTMLFormElement>) => {
-          e.preventDefault();
+          e.preventDefault(); // Need this to prevent autocomplete
         }}
       >
         <Input
