@@ -1,19 +1,14 @@
 import useLoginRedirect from "src/hooks/useLoginRedirect";
-import { useEffect } from "react";
 import NavBar from "@/components/NavBar";
+import EventHistory from "src/events/EventHistory";
 
 
 export default function Events() {
   useLoginRedirect();
 
-  useEffect(() => {
-    async function load() {
-    }
-    load();
-  }, []);
   return (
     <>
-      Events
+      <EventHistory />
       <NavBar />
     </>
   )

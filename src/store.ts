@@ -10,12 +10,14 @@ import { homeReducer } from './home/redux';
 import { sessionReducer } from './session/redux';
 import { eventReducer } from './event/redux';
 import { profileReducer } from './profile/redux';
+import { eventsReducer } from './events/redux';
 
 
 const combinedReducer = combineReducers({
   session: sessionReducer,
   home: homeReducer,
   event: eventReducer,
+  events: eventsReducer,
   profile: profileReducer,
 });
 
