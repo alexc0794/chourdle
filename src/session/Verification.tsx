@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Input, Stack, Text } from "@chakra-ui/react";
+import { Center, Input, Spinner, Stack, Text } from "@chakra-ui/react";
 import { verify } from "./api";
 
 
@@ -17,6 +17,9 @@ export default function Verification({ phoneNumber, onVerified }: VerificationPr
 
   function handleChangeCode(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
+    if (value.toString().length > VERIFICATION_CODE_DIGITS) {
+      return;
+    }
     if (value !== '' && !value.match(/^[0-9]+$/)) {
       return;
     }
@@ -35,7 +38,6 @@ export default function Verification({ phoneNumber, onVerified }: VerificationPr
       onVerified();
     } else {
       setNumErrors(numErrors + 1);
-      setCode("");
     }
   }
 
@@ -44,6 +46,9 @@ export default function Verification({ phoneNumber, onVerified }: VerificationPr
       <Text>
         {`Please enter your ${VERIFICATION_CODE_DIGITS}-digit authentication code we sent to your phone.`}
       </Text>
+      {isVerifying && (
+        <Center><Spinner /></Center>
+      )}
       <form
         onSubmit={(e: FormEvent<HTMLFormElement>) => {
           e.preventDefault(); // Need this to prevent autocomplete
@@ -57,6 +62,7 @@ export default function Verification({ phoneNumber, onVerified }: VerificationPr
           minLength={VERIFICATION_CODE_DIGITS}
           placeholder="XXX-XXX"
           onChange={handleChangeCode}
+          value={code}
         />
       </form>
     </Stack>

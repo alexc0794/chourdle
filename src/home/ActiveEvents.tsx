@@ -27,21 +27,15 @@ export default function ActiveEvents() {
 
   return (
     <Stack p={'0 0.5rem'} spacing={2}>
-      <Heading
-        size='md'
-        color='gray.300'
-        fontWeight='400'
-      >
+      <Heading variant={'md'}>
         Active
       </Heading>
       {activeEvents.map((event: Event, i: number) => (
         <Link key={event.eventId} href={`/events/${event.eventId}`}>
           <a>
             <Card isShimmering={i === 0}>
-              <>
-                <Heading size='md'>{event.eventName}</Heading>
-                <Text>{buildDescription(nowMs, event)}</Text>
-              </>
+              <Heading variant={'lg'}>{event.eventName}</Heading>
+              <Text>{buildDescription(nowMs, event)}</Text>
             </Card>
           </a>
         </Link>

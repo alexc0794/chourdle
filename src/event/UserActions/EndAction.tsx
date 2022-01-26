@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Event } from "@/interfaces";
 import { endEvent } from '../redux';
-import { Button, ButtonGroup, Modal, ModalContent } from '@chakra-ui/react';
+import { Button, ButtonGroup, Heading, Modal, ModalContent } from '@chakra-ui/react';
 import { SmallCloseIcon } from '@chakra-ui/icons';
 
 
@@ -30,17 +30,17 @@ export default function EndAction({ event }: { event: Event }) {
         onClose={() => setShow(false)}
         isCentered
       >
-        <ModalContent>
-          <h4>
+        <ModalContent p={'1rem'}>
+          <Heading variant={'lg'}>
             Are you sure you want to end the event?
-          </h4>
+          </Heading>
           <ButtonGroup style={{
             marginTop: '1rem'
           }}>
-            <Button onClick={() => setShow(false)} variant="secondary">
+            <Button onClick={() => setShow(false)}>
               Go Back
             </Button>
-            <Button onClick={handleConfirmEndClick} variant="danger">
+            <Button onClick={handleConfirmEndClick} variant="outline">
               End
             </Button>
           </ButtonGroup>

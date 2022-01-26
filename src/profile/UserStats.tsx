@@ -1,10 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { TransportMode } from "@/interfaces";
-import { Box, Center, Divider, Heading, HStack, Stack, Stat, StatArrow, StatGroup, StatLabel, StatNumber } from "@chakra-ui/react";
+import { Center, Heading, HStack, Stack, Stat, StatArrow, StatGroup, StatLabel, StatNumber } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { getTimeUnits } from "src/utils/time";
 import { fetchUserStats, selectUserStats } from "./redux";
-
 
 
 export default function UserStats() {
@@ -16,7 +15,6 @@ export default function UserStats() {
 
   useEffect(() => { load(); }, []);
   const statProps = {
-    // p: '0 1rem',
     minW: '100px'
   };
 
