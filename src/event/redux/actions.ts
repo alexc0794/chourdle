@@ -7,6 +7,7 @@ import {
   createEvent as createEventApi,
   fetchEvent as fetchEventApi, 
   inviteGuests as inviteGuestsApi,
+  joinEvent as joinEventApi,
   updateEventName as updateEventNameApi,
   updateTransportMode as updateTransportModeApi,
   transitionEventUserState as transitionEventUserStateApi,
@@ -36,6 +37,20 @@ export const createEvent = createAsyncThunk(
     if (!token) { throw new Error('no token'); }
 
     return await createEventApi(name, place, transportMode, token);
+  }
+);
+
+export const joinEvent = createAsyncThunk(
+  'event/join',
+  async (
+    { eventId, transportMode }: { eventId: string, transportMode: TransportMode },
+    { getState },
+  ): Promise<Event | null> => {
+    const state = getState() as RootState;
+    const token = selectToken(state);
+    if (!token) { throw new Error('no token'); }
+
+    return await joinEventApi(eventId, transportMode, token);
   }
 );
 

@@ -1,6 +1,6 @@
 import { combineReducers, createReducer } from '@reduxjs/toolkit';
 import { Event, TransportMode } from '@/interfaces';
-import { fetchEvent, inviteGuests } from './actions';
+import { endEvent, fetchEvent, inviteGuests, joinEvent, scheduleEvent, transitionEventUserState } from './actions';
 import { updateTransportMode } from '.';
 
 
@@ -38,6 +38,22 @@ const activeEventReducer = createReducer(initialActiveEventState, builder => {
       state.updatedAtMs = Date.now();
     })
     .addCase(inviteGuests.fulfilled, (state, { payload }) => {
+      state.event = payload;
+      state.updatedAtMs = Date.now();
+    })
+    .addCase(scheduleEvent.fulfilled, (state, { payload }) => {
+      state.event = payload;
+      state.updatedAtMs = Date.now();
+    })
+    .addCase(transitionEventUserState.fulfilled, (state, { payload }) => {
+      state.event = payload;
+      state.updatedAtMs = Date.now();
+    })
+    .addCase(joinEvent.fulfilled, (state, { payload }) => {
+      state.event = payload;
+      state.updatedAtMs = Date.now();
+    })
+    .addCase(endEvent.fulfilled, (state, { payload }) => {
       state.event = payload;
       state.updatedAtMs = Date.now();
     })

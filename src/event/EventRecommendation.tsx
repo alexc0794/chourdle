@@ -126,23 +126,29 @@ function RecommendationDepart({ event, eta }: { event: Event, eta: Eta | null })
 
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState<boolean>(false);
-  async function handleTransition(nextState: EventUserState) {
+  async function handleClick() {
     setLoading(true);
     await dispatch(transitionEventUserState({
       eventId: event.eventId,
-      nextState,
-      position,
+      nextState: EventUserState.departed,
+      position
     }));
     setLoading(false);
   }
 
   return (
-    <>
-      <div>{text}</div>
-      <Button disabled={loading} onClick={() => handleTransition(EventUserState.departed)}>
-        Depart
-      </Button>
-    </>
+    <Card p={'1rem'}>
+      <Flex align={'center'}>
+        <Text>{text}</Text>
+        <Spacer />
+        <Button
+          disabled={loading}
+          onClick={handleClick}
+        >
+          Depart
+        </Button>
+      </Flex>
+    </Card>
   );
 }
 
@@ -163,12 +169,18 @@ function RecommendationEnd({ me, event }: { me: EventUser | null, event: Event }
   }, true);
 
   return (
-    <>
-      <div>{hasEveryoneArrived ? 'End event to view stats' : 'Not everyone has arrived'}</div>
-      <Button disabled={!hasEveryoneArrived || loading} onClick={handleClick}>
-        End
-      </Button>
-    </>
+    <Card p={'1rem'}>
+      <Flex align={'center'}>
+        <Text>{hasEveryoneArrived ? 'End event to view stats' : 'Not everyone has arrived'}</Text>
+        <Spacer />
+        <Button
+          disabled={!hasEveryoneArrived || loading}
+          onClick={handleClick}
+        >
+          End
+        </Button>
+      </Flex>
+    </Card>
   );
 }
 

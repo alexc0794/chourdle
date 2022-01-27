@@ -80,6 +80,7 @@ export default function EventHeader({ event, me, isEditable }: EventHeaderProps)
         defaultValue={editedName}
         onChange={handleEditedNameChange}
         onSubmit={handleSaveName}
+        isPreviewFocusable={isEditable}
       >
         <EditablePreview />
         <Flex>

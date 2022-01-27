@@ -8,6 +8,12 @@ export const selectToken = (state: RootState) => {
     ? sessionToken.token 
     : null;
 }
+
+export const selectIsTokenExpired = (state: RootState) => {
+  const sessionToken = state.session.user?.sessionToken;
+  return !!sessionToken && sessionToken.tokenExpiresAtMs < Date.now()
+}
+
 export const selectPhoneNumber = (state: RootState) => state.session.user?.phoneNumber || null;
 
 export const tokenSelector = createSelector(selectToken, state => state);

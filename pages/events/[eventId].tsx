@@ -15,6 +15,8 @@ import UserActions from "src/event/UserActions";
 import NavBar from "@/components/NavBar";
 import useLoginRedirect from "@/hooks/useLoginRedirect";
 import EventTracker from "src/event/EventTracker";
+import EventEnded from "src/event/EventEnded";
+import EventJoin from "src/event/EventJoin";
 
 
 const EVENT_REFRESH_RATE_MS = IS_DEV ? 10000 : 60000;
@@ -24,16 +26,36 @@ const EventPage = () => {
   const eventId = query.eventId as string || null;
   const event: Event | null = useAppSelector(selectEvent);
   const me: EventUser | null = useAppSelector(selectMe);
+  const hasUserJoined: boolean = !!me && !!me.states.joined;
   const dispatch = useAppDispatch();
   const load = async (eventId: string | null) => {
     if (eventId) await dispatch(fetchEvent(eventId));
   }
+
   useLoginRedirect();
   useEffect(() => { load(eventId); }, [eventId]);
   useInterval(() => load(eventId), EVENT_REFRESH_RATE_MS);
 
   if (eventId !== event?.eventId) {
     return null;
+  } else if (!event) {
+    return null;
+  } else if (event.endedAtMs) {
+    return (
+      <>
+        <EventHeader event={event} me={me} isEditable={false} />
+        <EventEnded event={event} />
+        <NavBar />
+      </>
+    );
+  } else if (!hasUserJoined) {
+    return (
+      <>
+        <EventHeader event={event} me={me} isEditable={false} />
+        <EventJoin event={event} />
+        <NavBar />
+      </>
+    )
   }
 
   return (
