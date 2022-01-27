@@ -3,15 +3,15 @@ import Link from "next/link";
 
 
 const HOME_LINK = {
-  display: "Home",
+  display: "🏡",
   url: "/home"
 };
 const EVENT_LINK = {
-  display: "Events",
+  display: "🗓",
   url: "/events"
 };
 const PROFILE_LINK = {
-  display: "Profile",
+  display: "⏰",
   url: "/profile"
 };
 const LINKS = [HOME_LINK, EVENT_LINK, PROFILE_LINK];
@@ -34,13 +34,10 @@ const NavBar = () => {
         display="flex"
         justifyContent="space-between"
         width="90%"
-        p="0.5rem 1rem"
       >
         {LINKS.map(({ display, url }) => (
           <Link key={display} href={url}>
-            <a>
-              <Text color='font.lightgray'>{display}</Text>
-            </a>
+            <a><Text fontSize={'20pt'} p={'0 2rem'}>{display}</Text></a>
           </Link>
         ))}
       </Box>
