@@ -86,11 +86,11 @@ type TransportModeDetailsProps = {
   googlePlaceId?: string;
 };
 
-export function TransportModeDetails({
+function TransportModeDetails({
   transportMode,
   googlePlaceId,
 }: TransportModeDetailsProps) {
-  const eta: Eta | null = useTransportMode(transportMode, googlePlaceId || null);
+  const { eta, error } = useTransportMode(transportMode, googlePlaceId || null);
   let text = 'Calculating...';
   if (eta) {
     const { days, hours, minutes } = getTimeUnits(eta.durationMs);
@@ -107,6 +107,8 @@ export function TransportModeDetails({
       }
       return units.join(' ').trim();
     })();
+  } else if (error) {
+    text = error;
   }
 
   return (
@@ -115,5 +117,7 @@ export function TransportModeDetails({
     </Box>
   );
 }
+
+export const MemoizedTransportModeDetails = React.memo(TransportModeDetails);
 
 export default React.memo(TransportModeSelector);

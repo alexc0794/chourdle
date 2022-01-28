@@ -22,6 +22,9 @@ export const fetchEvent = createAsyncThunk(
     const state = getState() as RootState;
     const token = selectToken(state);
     const event: Event | null = await fetchEventApi(eventId, token);
+    if (!event) {
+      throw new Error();
+    }
     return event;
   }
 );
@@ -36,7 +39,11 @@ export const createEvent = createAsyncThunk(
     const token = selectToken(state);
     if (!token) { throw new Error('no token'); }
 
-    return await createEventApi(name, place, transportMode, token);
+    const event = await createEventApi(name, place, transportMode, token);
+    if (!event) {
+      throw new Error();
+    }
+    return event;
   }
 );
 
@@ -50,7 +57,11 @@ export const joinEvent = createAsyncThunk(
     const token = selectToken(state);
     if (!token) { throw new Error('no token'); }
 
-    return await joinEventApi(eventId, transportMode, token);
+    const event = await joinEventApi(eventId, transportMode, token);
+    if (!event) {
+      throw new Error();
+    }
+    return event;
   }
 );
 
@@ -78,7 +89,11 @@ export const scheduleEvent = createAsyncThunk(
     const token = selectToken(state);
     if (!token) { throw new Error('no token'); }
 
-    return await scheduleEventApi(eventId, token, scheduledForMs);
+    const event = await scheduleEventApi(eventId, token, scheduledForMs);
+    if (!event) {
+      throw new Error();
+    }
+    return event;
   }
 );
 
@@ -111,6 +126,9 @@ export const addEventUserEta = createAsyncThunk(
     if (!token) { throw new Error('no token'); }
     
     const event = await addEventUserEtaApi(eventId, token, eta);
+    if (!event) {
+      throw new Error();
+    }
     return event;
   }
 )

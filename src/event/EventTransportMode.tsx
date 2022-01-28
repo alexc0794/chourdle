@@ -1,4 +1,4 @@
-import { TransportModeDetails } from "@/components/TransportModeSelector";
+import { MemoizedTransportModeDetails } from "@/components/TransportModeSelector";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { TransportMode } from "@/interfaces";
 import {
@@ -58,7 +58,7 @@ export default function EventTransportMode({
               <Heading variant={'sm'}>Travel by</Heading>
             </Flex>
             <Flex grow={1}>
-              <TransportModeDetails transportMode={transportMode} googlePlaceId={googlePlaceId} />
+              <MemoizedTransportModeDetails transportMode={transportMode} googlePlaceId={googlePlaceId} />
               <Spacer />
               <Flex align={'center'}>
                 <Text fontSize={'12pt'} mr={'0.25rem'}>
@@ -81,7 +81,7 @@ export default function EventTransportMode({
                   borderTop={'1px solid rgba(0,0,0,.125)'}
                   p={'0.75rem 1rem'}
                 >
-                  <TransportModeDetails transportMode={currentTransportMode} googlePlaceId={googlePlaceId} />
+                  <MemoizedTransportModeDetails transportMode={currentTransportMode} googlePlaceId={googlePlaceId} />
                   <Spacer />
                   <Button
                     colorScheme={'blue'}

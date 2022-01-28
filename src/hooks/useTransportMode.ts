@@ -14,10 +14,14 @@ type Cache = {
 export default function useTransportMode(
   transportMode: TransportMode | null, 
   googlePlaceId: string | null,
-) {
+): {
+  eta: Eta | null,
+  error?: string,
+} {
   const { position } = usePosition();
-  const isGoogleLoaded = useGoogleMaps();
+  let { loaded: isGoogleLoaded, error: googleMapsError } = useGoogleMaps();
   const [cache, setCache] = useState<Cache>({});
+  const [etaError, setEtaError] = useState<string | undefined>(undefined);
   const currentCacheKey = `${transportMode}|${googlePlaceId}|${position?.latitude},${position?.longitude}`;
 
   useEffect(() => {
@@ -26,15 +30,19 @@ export default function useTransportMode(
       position: Position,
       googlePlaceId: string
     ) {
-      const eta: Eta = await getEta(
-        transportMode,
-        position,
-        googlePlaceId
-      );
-      setCache({
-        ...cache,
-        [currentCacheKey]: eta
-      });
+      try {
+        const eta: Eta = await getEta(
+          transportMode,
+          position,
+          googlePlaceId
+        );
+        setCache({
+          ...cache,
+          [currentCacheKey]: eta
+        });
+      } catch {
+        setEtaError('No Result');
+      }
     }
 
     if (
@@ -49,5 +57,8 @@ export default function useTransportMode(
     }
   }, [transportMode, position, googlePlaceId, isGoogleLoaded, cache, currentCacheKey]);
 
-  return currentCacheKey in cache ? cache[currentCacheKey] : null
+  return {
+    eta: currentCacheKey in cache ? cache[currentCacheKey] : null,
+    error: googleMapsError || etaError,
+  };
 }

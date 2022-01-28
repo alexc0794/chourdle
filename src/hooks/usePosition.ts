@@ -42,10 +42,17 @@ export default function usePosition(): UsePositionType {
       navigator.geolocation.clearWatch(watchRef.current);
       return;
     }
-
+    
     navigator.geolocation.getCurrentPosition(onPositionEvent);
     if (!watchRef.current) {
-      watchRef.current = navigator.geolocation.watchPosition(onPositionEvent);
+      watchRef.current = navigator.geolocation.watchPosition(
+        onPositionEvent,
+        (error) => console.error(error.code, error.message),
+        {
+          maximumAge: 30 * 1000,
+          enableHighAccuracy: false,
+        }
+      );
     }
 
     return () => {
