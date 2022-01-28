@@ -1,9 +1,8 @@
 import React from 'react';
 import { Event, EventUser } from '@/interfaces';
-import { Button, ButtonGroup, Flex } from '@chakra-ui/react';
+import { Button, ButtonGroup } from '@chakra-ui/react';
 import { ChatIcon } from '@chakra-ui/icons';
-import EndAction from './EndAction';
-import InviteAction from './InviteAction';
+import InviteAction from '../actions/InviteAction';
 
 
 type UserActionsProps = {
@@ -44,8 +43,6 @@ export default function UserActions({ event, me }: UserActionsProps) {
           Text All
         </Button>
       )}
-      <InviteAction event={event} />
-      <EndAction event={event} />
     </ButtonGroup>
   );
 }

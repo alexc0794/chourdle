@@ -92,7 +92,11 @@ export const inviteGuests = createAsyncThunk(
     const token = selectToken(state);
     if (!token) { throw new Error('no token'); }
 
-    return await inviteGuestsApi(eventId, token, phoneNumbers);
+    const event = await inviteGuestsApi(eventId, token, phoneNumbers);
+    if (!event) {
+      throw new Error();
+    }
+    return event;
   }
 );
 

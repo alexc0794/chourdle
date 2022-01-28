@@ -24,7 +24,7 @@ export default function ProfileNavBar({ phoneNumber }: {
       </Heading>
       <Menu>
         <MenuButton
-          fontSize={'16pt'}
+          fontSize={'12pt'}
           color={'white'}
           p={'0.5rem'}
         >

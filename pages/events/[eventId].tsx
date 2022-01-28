@@ -17,6 +17,7 @@ import useLoginRedirect from "@/hooks/useLoginRedirect";
 import EventTracker from "src/event/EventTracker";
 import EventEnded from "src/event/EventEnded";
 import EventJoin from "src/event/EventJoin";
+import EventNavBar from "src/event/EventNavBar";
 
 
 const EVENT_REFRESH_RATE_MS = IS_DEV ? 10000 : 60000;
@@ -60,25 +61,22 @@ const EventPage = () => {
 
   return (
     <>
-      {event ? (
-        <>
-          <EventHeader event={event} me={me} isEditable />
-          {me && (
-            <Stack spacing={1} p={'0 0.5rem'}>
-              <EventTracker event={event} me={me} />
-              <EventPageSchedule event={event} me={me} />
-              <EventTransportMode
-                eventId={event.eventId}
-                transportMode={me.transportMode}
-                googlePlaceId={event.place.googlePlaceId}
-              />
-              <EventRecommendation event={event} me={me} />
-              <EventUsers event={event} me={me} />
-              <UserActions event={event} me={me} />
-            </Stack>
-          )}
-        </>
-      ) : null}
+      <EventNavBar event={event} me={me} />
+      <EventHeader event={event} me={me} isEditable />
+      {me && (
+        <Stack spacing={1} p={'0 0.5rem'}>
+          <EventTracker event={event} me={me} />
+          <EventPageSchedule event={event} me={me} />
+          <EventTransportMode
+            eventId={event.eventId}
+            transportMode={me.transportMode}
+            googlePlaceId={event.place.googlePlaceId}
+          />
+          <EventRecommendation event={event} me={me} />
+          <EventUsers event={event} me={me} />
+          <UserActions event={event} me={me} />
+        </Stack>
+      )}
       <NavBar />
     </>
   );

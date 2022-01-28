@@ -4,6 +4,7 @@ import { Event, EventUser, Eta, TransportMode } from "@/interfaces";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { scheduleEvent, selectEta } from "./redux";
 import { getFormattedDate, getFormattedTime } from "src/utils/eta";
+import ScheduleAction from "./actions/ScheduleAction";
 
 
 type EventPageScheduleProps = {
@@ -41,7 +42,7 @@ export default function EventPageSchedule({ event, me }: EventPageScheduleProps)
           role={'link'}
           onClick={openModal}
         >
-          <StatLabel>Scheduled For</StatLabel>
+          <StatLabel>Scheduled</StatLabel>
           {event.scheduledForMs && (
             <>
               <StatNumber fontSize={'24pt'}>{getFormattedTime(event.scheduledForMs)}</StatNumber>
@@ -50,21 +51,9 @@ export default function EventPageSchedule({ event, me }: EventPageScheduleProps)
           )}
         </Stat>
       </StatGroup >
-      <Modal
-        isOpen={showScheduleModal}
-        onClose={closeModal}
-        variant={'light'}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <MemoizedEventPageScheduleTimer
-            eventId={event.eventId}
-            scheduledForMs={event.scheduledForMs}
-            eta={eta}
-            onSchedule={closeModal}
-          />
-        </ModalContent>
-      </Modal>
+      {showScheduleModal && (
+        <ScheduleAction event={event} onClose={closeModal} />
+      )}
     </>
   );
 }

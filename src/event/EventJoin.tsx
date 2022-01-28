@@ -1,13 +1,12 @@
 import TransportModeSelector from "@/components/TransportModeSelector";
 import { useAppDispatch } from "@/hooks/useRedux";
-import { Event, EventUser, TransportMode } from "@/interfaces";
+import { Event, TransportMode } from "@/interfaces";
 import { Flex } from "@chakra-ui/react";
 import { joinEvent } from "./redux";
 
 
 type EventJoinProps = {
   event: Event;
-  me: EventUser | null;
 };
 
 export default function EventJoin({ event }: EventJoinProps) {
