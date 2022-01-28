@@ -1,5 +1,5 @@
 import { memo, useState, useCallback } from "react";
-import { Button, ButtonGroup, Center, Flex, Heading, Menu, MenuButton, MenuItem, MenuList, Modal, ModalContent, ModalOverlay, Spinner, Stack, Stat, StatGroup, StatHelpText, StatLabel, StatNumber, Text } from "@chakra-ui/react";
+import { Button, ButtonGroup, Center, Divider, Flex, Heading, Menu, MenuButton, MenuItem, MenuList, Modal, ModalContent, ModalOverlay, Spinner, Stack, Stat, StatGroup, StatHelpText, StatLabel, StatNumber, Text } from "@chakra-ui/react";
 import { Event, EventUser, Eta, TransportMode } from "@/interfaces";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { scheduleEvent, selectEta } from "./redux";
@@ -24,8 +24,8 @@ export default function EventPageSchedule({ event, me }: EventPageScheduleProps)
 
   return (
     <>
-      <StatGroup p={'0.5rem'}>
-        <Stat>
+      <StatGroup>
+        <Stat m={'0.5rem'} borderRight={'1px solid'} borderRightColor={'background.gray'}>
           <StatLabel>Your Projected Arrival</StatLabel>
           {timeMs === null ? (
             <Spinner size={'lg'} />
@@ -36,7 +36,9 @@ export default function EventPageSchedule({ event, me }: EventPageScheduleProps)
             </>
           )}
         </Stat>
+        <Divider orientation={'vertical'} />
         <Stat
+          m={'0.5rem'}
           aria-label={'Edit the schedule time'}
           tabIndex={0}
           role={'link'}

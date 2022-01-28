@@ -37,13 +37,13 @@ function SearchBar({
   onSelect = () => { }
 }: SearchBarProps) {
   const [searchTerm, setSearchTerm] = useState<string>(initialSearchTerm);
-  const isGoogleLoaded = useGoogleMaps();
+  const { loaded, error } = useGoogleMaps();
 
   useEffect(() => {
     setSearchTerm(initialSearchTerm);
   }, [initialSearchTerm]);
 
-  if (!isGoogleLoaded) {
+  if (!loaded || error) {
     return <div className={styles.container}><input className={styles.input} disabled /></div>;
   }
 
