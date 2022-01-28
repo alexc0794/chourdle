@@ -26,8 +26,8 @@ export default function usePosition(): UsePositionType {
     }
 
     setGeolocation({
-      latitude: e.coords.latitude,
-      longitude: e.coords.longitude,
+      latitude: Math.round(e.coords.latitude * 10000) / 10000,
+      longitude: Math.round(e.coords.longitude * 10000) / 10000,
       accuracy: e.coords.accuracy, // in meters
       timestamp: e.timestamp,
     });
