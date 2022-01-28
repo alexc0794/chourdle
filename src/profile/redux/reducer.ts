@@ -1,6 +1,6 @@
-import { combineReducers, createReducer } from '@reduxjs/toolkit';
+import { createReducer } from '@reduxjs/toolkit';
 import { UserStats } from '@/interfaces';
-import { fetchUserStats } from './actions';
+import { fetchMyStats, fetchUserStats } from './actions';
 
 
 type ProfileState = {
@@ -24,6 +24,10 @@ export const profileReducer = createReducer(initialProfileState, builder => {
     })
     .addCase(fetchUserStats.rejected, state => {
       state.error = true;
+    })
+    .addCase(fetchMyStats.fulfilled, (state, { payload }) => {
+      state.userStats = payload;
+      state.updatedAtMs = Date.now();
     })
     .addCase(fetchUserStats.fulfilled, (state, { payload }) => {
       state.userStats = payload;

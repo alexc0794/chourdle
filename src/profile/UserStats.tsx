@@ -3,14 +3,23 @@ import { TransportMode } from "@/interfaces";
 import { Center, Heading, HStack, Stack, Stat, StatArrow, StatGroup, StatLabel, StatNumber } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { getTimeUnits } from "src/utils/time";
-import { fetchUserStats, selectUserStats } from "./redux";
+import { fetchMyStats, fetchUserStats, selectUserStats } from "./redux";
 
 
-export default function UserStats() {
+export default function UserStats({
+  phoneNumber
+}: {
+  phoneNumber?: string
+}) {
   const userStats = useAppSelector(selectUserStats);
   const dispatch = useAppDispatch();
   const load = async () => {
-    dispatch(fetchUserStats());
+    // TODO: Consider refactoring this. My profile and other user's profile will prob be separated by design eventually
+    if (phoneNumber) {
+      dispatch(fetchUserStats(phoneNumber));
+    } else {
+      dispatch(fetchMyStats());
+    }
   }
 
   useEffect(() => { load(); }, []);

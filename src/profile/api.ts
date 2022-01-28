@@ -32,7 +32,21 @@ export async function getFollowing(token: string): Promise<User[]> {
   }
 }
 
-export async function fetchUserStats(token: string): Promise<UserStats | null> {
+export async function fetchUserStats(phoneNumber: string, token: string): Promise<UserStats | null> {
+  const headers = {
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+
+  try {
+    const response = await axios.get(`${BASE_API_URL}/user-stats/${phoneNumber}`, { headers });
+    return response.data;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+export async function fetchMyStats(token: string): Promise<UserStats | null> {
   const headers = {
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
@@ -45,3 +59,4 @@ export async function fetchUserStats(token: string): Promise<UserStats | null> {
     return null;
   }
 }
+

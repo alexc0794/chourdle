@@ -11,10 +11,11 @@ type NavBarAction = {
 
 type NavBarProps = {
   title?: ReactElement;
+  icon: ReactElement;
   actions: NavBarAction[];
 };
 
-export default function HeaderNavBar({ title, actions }: NavBarProps) {
+export default function HeaderNavBar({ title, icon, actions }: NavBarProps) {
   return (
     <Flex
       alignItems={'center'}
@@ -30,7 +31,7 @@ export default function HeaderNavBar({ title, actions }: NavBarProps) {
             color={'white'}
             p={'0.5rem'}
           >
-            <HamburgerIcon />
+            {icon}
           </MenuButton>
           <MenuList
             alignItems={'center'}

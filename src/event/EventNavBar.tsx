@@ -1,5 +1,5 @@
 import { Heading } from "@chakra-ui/react";
-import { AtSignIcon, CalendarIcon, ChatIcon, CloseIcon } from "@chakra-ui/icons";
+import { AtSignIcon, CalendarIcon, ChatIcon, CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { Event, EventUser } from "@/interfaces";
 import HeaderNavBar from "@/components/HeaderNavBar";
 import { useState } from "react";
@@ -36,6 +36,7 @@ export default function EventNavBar({
     <>
       <HeaderNavBar
         title={<Heading variant={'md'}></Heading>}
+        icon={<HamburgerIcon />}
         actions={[
           {
             text: 'Text All',
