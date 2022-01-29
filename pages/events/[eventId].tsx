@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { Event, EventUser } from "@/interfaces";
 import { fetchEvent, selectEvent, selectMe } from "src/event/redux";
 import EventHeader from "src/event/EventHeader";
-import EventTransportMode from "src/event/EventTransportMode";
 import EventRecommendation from "src/event/EventRecommendation";
 import EventPageSchedule from "src/event/EventScheduler";
 import EventUsers from "src/event/EventUsers";
@@ -67,11 +66,6 @@ const EventPage = () => {
         <Stack spacing={1} p={'0 0.5rem'}>
           <EventTracker event={event} me={me} />
           <EventPageSchedule event={event} me={me} />
-          <EventTransportMode
-            eventId={event.eventId}
-            transportMode={me.transportMode}
-            googlePlaceId={event.place.googlePlaceId}
-          />
           <EventRecommendation event={event} me={me} />
           <EventUsers event={event} me={me} />
           <UserActions event={event} me={me} />

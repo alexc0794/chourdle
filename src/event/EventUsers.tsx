@@ -9,8 +9,9 @@ import { sortEventUsers } from "./utils";
 import { useAppSelector } from "@/hooks/useRedux";
 import { selectPhoneNumber } from "src/session/redux";
 import { getFormattedTime } from "src/utils/eta";
-import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Badge, Flex, Heading, IconButton, Spinner, Stack, Text } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Badge, Box, Flex, Heading, IconButton, Spinner, Stack, Text } from "@chakra-ui/react";
 import { getTimeUnits } from "src/utils/time";
+import EventTransportMode from "./EventTransportMode";
 
 
 const KM_TO_MILES_CONVERSION = 0.621371; // 1 km = 0.621371 miles
@@ -43,11 +44,17 @@ export default function EventUsers({ event, me }: EventUsersProps) {
   });
 
   const usersGroupProps: EventUsersGroupProps[] = [];
+  const sharedUserGroupProps = {
+    eventId: event.eventId,
+    googlePlaceId: event.place.googlePlaceId,
+    phoneNumber: me ? me.phoneNumber : null,
+    transportMode: me ? me.transportMode : null,
+  }
 
   if (arrivedEventUsers.length) {
     arrivedEventUsers.sort(sortEventUsers);
     usersGroupProps.push({
-      eventId: event.eventId,
+      ...sharedUserGroupProps,
       title: "ARRIVED",
       eventUsers: arrivedEventUsers,
       startRank: 1,
@@ -57,7 +64,7 @@ export default function EventUsers({ event, me }: EventUsersProps) {
   if (departedEventUsers.length) {
     departedEventUsers.sort(sortEventUsers);
     usersGroupProps.push({
-      eventId: event.eventId,
+      ...sharedUserGroupProps,
       title: "DEPARTED",
       eventUsers: departedEventUsers,
       startRank: arrivedEventUsers.length + 1,
@@ -67,7 +74,7 @@ export default function EventUsers({ event, me }: EventUsersProps) {
   if (joinedEventUsers.length) {
     joinedEventUsers.sort(sortEventUsers);
     usersGroupProps.push({
-      eventId: event.eventId,
+      ...sharedUserGroupProps,
       title: "JOINED",
       eventUsers: joinedEventUsers,
       startRank: null,
@@ -77,8 +84,8 @@ export default function EventUsers({ event, me }: EventUsersProps) {
   if (invitedEventUsers.length) {
     invitedEventUsers.sort(sortEventUsers);
     usersGroupProps.push({
-      eventId: event.eventId,
-      title: "INVITED ",
+      ...sharedUserGroupProps,
+      title: "INVITED",
       eventUsers: invitedEventUsers,
       startRank: null,
     });
@@ -95,12 +102,17 @@ export default function EventUsers({ event, me }: EventUsersProps) {
 
 type EventUsersGroupProps = {
   eventId: string;
+  googlePlaceId?: string;
+  phoneNumber: string | null;
+  transportMode: TransportMode | null;
   title: string;
   eventUsers: Array<EventUser>;
   startRank: number | null;
 };
 
-function EventUsersGroup({ eventId, title, eventUsers, startRank }: EventUsersGroupProps) {
+function EventUsersGroup({
+  eventId, googlePlaceId, phoneNumber, transportMode, title, eventUsers, startRank,
+}: EventUsersGroupProps) {
   return (
     <Stack spacing={0}>
       <Heading
@@ -113,12 +125,17 @@ function EventUsersGroup({ eventId, title, eventUsers, startRank }: EventUsersGr
       <Accordion allowMultiple allowToggle>
         <Stack spacing={1}>
           {eventUsers.map((eventUser: EventUser, i: number) => (
-            <EventUserCard
-              key={eventUser.phoneNumber}
-              eventId={eventId}
-              eventUser={eventUser}
-              ranking={startRank !== null ? startRank + i : null}
-            />
+            <Box key={eventUser.phoneNumber}>
+              <EventUserCard
+                key={eventUser.phoneNumber}
+                eventId={eventId}
+                eventUser={eventUser}
+                ranking={startRank !== null ? startRank + i : null}
+              />
+              {phoneNumber === eventUser.phoneNumber && (
+                <EventTransportMode eventId={eventId} transportMode={transportMode} googlePlaceId={googlePlaceId} />
+              )}
+            </Box>
           ))}
         </Stack>
       </Accordion>
@@ -136,70 +153,6 @@ type EventUserCardProps = {
 function EventUserCard({ eventId, eventUser, ranking }: EventUserCardProps) {
   const phoneNumber = useAppSelector(selectPhoneNumber);
   const isMe = !!phoneNumber && eventUser.phoneNumber === phoneNumber;
-
-  function buildEtaTitle(eventUser: EventUser): string {
-    let title = '';
-    if (
-      eventUser.states.current === EventUserState.departed &&
-      eventUser.states.departed &&
-      eventUser.etas.length > 0
-    ) {
-      const recentEta = eventUser.etas[eventUser.etas.length - 1];
-      const diffMs = recentEta.durationMs + recentEta.recordedAtMs - Date.now();
-      const { days, hours, minutes } = getTimeUnits(diffMs);
-      if (diffMs > 0) {
-        title += ' • ';
-        title += (() => {
-          const units: string[] = [];
-          if (days) {
-            units.push(days === 1 ? `1 day` : `${days} days`);
-          }
-          if (hours) {
-            units.push(`${hours} hr`);
-          }
-          if (minutes) {
-            units.push(`${minutes} min`);
-          }
-          return units.join(' ').trim();
-        })();
-
-        if (recentEta.transportMode !== undefined) {
-          title += ` by ${TransportMode[recentEta.transportMode].toLowerCase()}`;
-        }
-      }
-    }
-    return title;
-  }
-
-  function buildEtaDescription(eventUser: EventUser): string {
-    if (eventUser.etas.length === 0) return '';
-    let description = "";
-    const recentEta = eventUser.etas[eventUser.etas.length - 1];
-    const distanceMiles = (recentEta.distanceMeters) / 1000 * KM_TO_MILES_CONVERSION;
-    const km = Math.round(distanceMiles * 10) / 10;
-    description += `${km} mi`;
-
-    description += ' • ';
-    const timeMs = recentEta.durationMs + recentEta.recordedAtMs
-    description += getFormattedTime(timeMs);
-
-    description += ' • ';
-    const diffMs = Date.now() - recentEta.recordedAtMs;
-    const diffMin = Math.round(diffMs / 1000 / 60);
-
-    description += (() => {
-      if (diffMin === 0) return 'just now';
-      else if (diffMin > 60 * 24) return 'a while ago';
-      const hoursAgo = Math.floor(diffMin / 60);
-      const minutesAgo = diffMin % 60;
-      return [
-        (hoursAgo ? `${Math.floor(diffMin / 60)} hr` : ''),
-        (minutesAgo ? `${diffMin % 60} min` : '')
-      ].join(' ').trim() + ' ago'
-    })();
-
-    return description;
-  }
 
   return (
     <AccordionItem border={'none'} bg={'background.dark'}>
@@ -284,6 +237,70 @@ function EventUserCard({ eventId, eventUser, ranking }: EventUserCardProps) {
       </AccordionPanel>
     </AccordionItem>
   );
+}
+
+function buildEtaTitle(eventUser: EventUser): string {
+  let title = '';
+  if (
+    eventUser.states.current === EventUserState.departed &&
+    eventUser.states.departed &&
+    eventUser.etas.length > 0
+  ) {
+    const recentEta = eventUser.etas[eventUser.etas.length - 1];
+    const diffMs = recentEta.durationMs + recentEta.recordedAtMs - Date.now();
+    const { days, hours, minutes } = getTimeUnits(diffMs);
+    if (diffMs > 0) {
+      title += ' • ';
+      title += (() => {
+        const units: string[] = [];
+        if (days) {
+          units.push(days === 1 ? `1 day` : `${days} days`);
+        }
+        if (hours) {
+          units.push(`${hours} hr`);
+        }
+        if (minutes) {
+          units.push(`${minutes} min`);
+        }
+        return units.join(' ').trim();
+      })();
+
+      if (recentEta.transportMode !== undefined) {
+        title += ` by ${TransportMode[recentEta.transportMode].toLowerCase()}`;
+      }
+    }
+  }
+  return title;
+}
+
+function buildEtaDescription(eventUser: EventUser): string {
+  if (eventUser.etas.length === 0) return '';
+  let description = "";
+  const recentEta = eventUser.etas[eventUser.etas.length - 1];
+  const distanceMiles = (recentEta.distanceMeters) / 1000 * KM_TO_MILES_CONVERSION;
+  const km = Math.round(distanceMiles * 10) / 10;
+  description += `${km} mi`;
+
+  description += ' • ';
+  const timeMs = recentEta.durationMs + recentEta.recordedAtMs
+  description += getFormattedTime(timeMs);
+
+  description += ' • ';
+  const diffMs = Date.now() - recentEta.recordedAtMs;
+  const diffMin = Math.round(diffMs / 1000 / 60);
+
+  description += (() => {
+    if (diffMin === 0) return 'just now';
+    else if (diffMin > 60 * 24) return 'a while ago';
+    const hoursAgo = Math.floor(diffMin / 60);
+    const minutesAgo = diffMin % 60;
+    return [
+      (hoursAgo ? `${Math.floor(diffMin / 60)} hr` : ''),
+      (minutesAgo ? `${diffMin % 60} min` : '')
+    ].join(' ').trim() + ' ago'
+  })();
+
+  return description;
 }
 
 type EventUserCardActionsProps = {
