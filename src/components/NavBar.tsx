@@ -1,48 +1,53 @@
-import { Box, Text } from "@chakra-ui/react";
-import Link from "next/link";
+import { ReactElement } from "react";
+import { Flex, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
 
-const HOME_LINK = {
-  display: "🏡",
-  url: "/home"
+type NavBarAction = {
+  text: string;
+  icon?: ReactElement;
+  onClick: () => void;
 };
-const EVENT_LINK = {
-  display: "🗓",
-  url: "/events"
-};
-const PROFILE_LINK = {
-  display: "⏰",
-  url: "/profile"
-};
-const LINKS = [HOME_LINK, EVENT_LINK, PROFILE_LINK];
 
-const NavBar = () => {
+type NavBarProps = {
+  title?: ReactElement;
+  icon: ReactElement;
+  actions: NavBarAction[];
+};
+
+export default function NavBar({ title, icon, actions }: NavBarProps) {
   return (
-    <Box
-      pos="fixed"
-      bottom={0}
-      right={0}
-      left={0}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      p="0.5rem"
-      bg="black"
+    <Flex
+      alignItems={'center'}
+      justify={'space-between'}
+      background={'background.dark'}
+      p={'0 0.5rem'}
     >
-      <Box
-        as="nav"
-        display="flex"
-        justifyContent="space-between"
-        width="90%"
-      >
-        {LINKS.map(({ display, url }) => (
-          <Link key={display} href={url}>
-            <a><Text fontSize={'20pt'} p={'0 2rem'}>{display}</Text></a>
-          </Link>
-        ))}
-      </Box>
-    </Box>
-  )
-};
-
-export default NavBar;
+      {title}
+      {actions.length > 0 && (
+        <Menu>
+          <MenuButton
+            fontSize={'12pt'}
+            color={'white'}
+            p={'0.5rem'}
+          >
+            {icon}
+          </MenuButton>
+          <MenuList
+            alignItems={'center'}
+            color={'black'}
+          >
+            {actions.map(({ text, icon, onClick }) => (
+              <MenuItem
+                key={text}
+                onClick={onClick}
+              >
+                {icon}
+                {text}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
+      )}
+    </Flex >
+  );
+}

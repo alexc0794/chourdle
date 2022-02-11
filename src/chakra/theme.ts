@@ -10,6 +10,9 @@ const theme = extendTheme(
       background: {
         dark: '#282c34',
         gray: '#343a40',
+        foundExact: 'green',
+        foundInWord: 'orange',
+        notFound: '#343a40',
       },
       font: {
         lightgray: 'lightgray',

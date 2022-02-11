@@ -13,11 +13,11 @@ class MyApp extends Component<AppProps> {
     return (
       <>
         <Head>
-          <title>Meetup</title>
+          <title>Wordle</title>
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="theme-color" content="#000000" />
-          <meta name="description" content="Cobyo Meetup web app" />
+          <meta name="description" content="Alex's Wordle Clone" />
           <link rel="icon" href="/image/favicon.ico" />
         </Head>
         <ChakraProvider theme={theme}>
